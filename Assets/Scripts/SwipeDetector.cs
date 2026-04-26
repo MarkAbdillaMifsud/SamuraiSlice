@@ -15,8 +15,14 @@ public class SwipeDetector : MonoBehaviour
             RaycastHit2D hit = Physics2D.Linecast(previousPosition, currentPosition);
             if(hit.collider != null)
             {
+                if(hit.collider.tag == "Ingredient")
+                {
+                    Debug.Log("+10!");
+                } else
+                {
+                    Debug.Log("GameOver!");
+                }
                 Destroy(hit.collider.gameObject);
-                Debug.Log("+10!");
             }
             previousPosition = currentPosition;
         }

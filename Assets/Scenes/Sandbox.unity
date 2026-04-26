@@ -414,7 +414,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ingredientPrefab: {fileID: 3093856380808435551, guid: da4b0216b430afe4aa658ed87f9f5ee1, type: 3}
+  bombPrefab: {fileID: 3228957854569923679, guid: 6935136e2641c934f8af1df0d583dccb, type: 3}
   spawnInterval: 0.8
+  bombSpawnChance: 0.1
   horizontalJitter: 2
   upwardForceRange: {x: 8, y: 12}
   sidewaysForceMax: 3
