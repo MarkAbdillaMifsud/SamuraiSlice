@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8094449379885894522}
   - component: {fileID: 804632869826624133}
   - component: {fileID: 2740436111923135166}
+  - component: {fileID: -636404066726663772}
   m_Layer: 0
   m_Name: BOMB
   m_TagString: Bomb
@@ -156,3 +157,16 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &-636404066726663772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3228957854569923679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8492c60168e43974fb7999560e0a1d32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ingredient
+  lifetime: 3
