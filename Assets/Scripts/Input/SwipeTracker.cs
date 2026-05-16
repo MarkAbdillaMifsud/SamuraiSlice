@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -12,6 +11,9 @@ namespace SamuraiSlice
 
         [Header("Buffer")]
         [SerializeField, Min(2)] private int maxSamples = 8;
+
+        [Header("Blade Visual")]
+        [SerializeField] private TrailRenderer bladeTrail;
 
         [SerializeField] private float clearGrace = 0.1f;
 
@@ -39,20 +41,36 @@ namespace SamuraiSlice
 
         private void Update()
         {
-            if(swipeInput.IsSwiping)
+            if (swipeInput.IsSwiping)
             {
                 _releaseTime = -1f;
-                AppendSample(swipeInput.CurrentWorldPoint);
-            } else if (_path.Count > 0)
-            {
-                if(_releaseTime < 0f)
+
+                if (bladeTrail != null && !bladeTrail.emitting)
                 {
-                    _releaseTime = Time.time;
+                    bladeTrail.transform.position = swipeInput.CurrentWorldPoint;
+                    bladeTrail.Clear();
+                    bladeTrail.emitting = true;
                 }
-                else if (Time.time - _releaseTime >= clearGrace)
+
+                if (bladeTrail != null)
+                    bladeTrail.transform.position = swipeInput.CurrentWorldPoint;
+
+                AppendSample(swipeInput.CurrentWorldPoint);
+            }
+            else
+            {
+                if (bladeTrail != null && bladeTrail.emitting)
+                    bladeTrail.emitting = false;
+
+                if (_path.Count > 0)
                 {
-                    _path.Clear();
-                    _releaseTime = -1f;
+                    if (_releaseTime < 0f)
+                        _releaseTime = Time.time;
+                    else if (Time.time - _releaseTime >= clearGrace)
+                    {
+                        _path.Clear();
+                        _releaseTime = -1f;
+                    }
                 }
             }
 
