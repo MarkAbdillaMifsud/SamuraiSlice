@@ -9,13 +9,14 @@ namespace SamuraiSlice
         public bool IsSliced { get; private set; }
         public event Action<Ingredient> Sliced;
 
-        private void Slice()
+        public void Slice()
         {
             if (IsSliced) {
                 return;
             }
 
             IsSliced = true;
+            Debug.Log($"Sliced {name}!");
             gameObject.GetComponent<Collider2D>().enabled = false;
             Sliced?.Invoke(this);
             Destroy(gameObject, 0.5f);
