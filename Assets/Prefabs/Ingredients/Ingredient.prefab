@@ -169,3 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c918abe114b5164c94a747975b46757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
+  halfIngredient: {fileID: 2755196619092988582, guid: d07a3fa82df7d634891ac1fd426ccd42, type: 3}
+  halfSpeed: 2
+  halfSpin: 200
+  halfLifetime: 1.5

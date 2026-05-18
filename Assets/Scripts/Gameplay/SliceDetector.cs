@@ -72,7 +72,8 @@ namespace SamuraiSlice
                     continue;
                 }
 
-                ingredient.Slice();
+                Vector2 swipeDirection = b - a;
+                ingredient.Slice(swipeDirection);
             }
         }
     }
