@@ -14,6 +14,7 @@ namespace SamuraiSlice
 
         public bool IsSliced { get; private set; }
         public event Action<Ingredient> Sliced;
+        public static event Action OnIngredientMissed;
 
         public void Slice(Vector2 swipeDirection)
         {
@@ -53,6 +54,30 @@ namespace SamuraiSlice
             }
 
             Destroy(half, halfLifetime);
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if(!collision.CompareTag("MissZone"))
+            {
+                return;
+            }
+
+            if(IsSliced)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            //Ensure that MissZone does not trigger if the ingredient has just spawned
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            if (rb != null && rb.linearVelocity.y >= 0f)
+            {
+                return;
+            }
+
+            OnIngredientMissed?.Invoke();
+            Destroy(gameObject);
         }
     }
 }
