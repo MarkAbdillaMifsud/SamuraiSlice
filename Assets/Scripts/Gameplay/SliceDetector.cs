@@ -43,15 +43,26 @@ namespace SamuraiSlice
                 return;
             }
 
-            for(int i = 0; i < path.Count - 1; i++)
+            for (int i = 0; i < path.Count - 1; i++)
             {
                 Vector2 a = path[i];
                 Vector2 b = path[i + 1];
 
                 RaycastHit2D hit = Physics2D.Linecast(a, b, sliceableLayers);
+                Vector2 swipeDirection = b - a;
 
-                if(hit.collider == null)
+                if (hit.collider == null)
                 {
+                    continue;
+                }
+
+                if(hit.collider.CompareTag("Bomb"))
+                {
+                    Bomb _bomb = hit.collider.GetComponent<Bomb>();
+                    if(_bomb != null )
+                    {
+                        _bomb.Slice(swipeDirection);
+                    }
                     continue;
                 }
 
@@ -72,7 +83,6 @@ namespace SamuraiSlice
                     continue;
                 }
 
-                Vector2 swipeDirection = b - a;
                 ingredient.Slice(swipeDirection);
             }
         }

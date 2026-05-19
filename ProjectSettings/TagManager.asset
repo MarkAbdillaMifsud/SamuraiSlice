@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ingredient
   - MissZone
+  - Bomb
   layers:
   - Default
   - TransparentFX
