@@ -7,7 +7,7 @@ namespace SamuraiSlice
     {
         [SerializeField] private int maxMisses = 3;
         public int CurrentMisses { get; private set; }
-        public event Action<int> OnMissCountChanged;
+        public static event Action<int> OnMissCountChanged;
         public event Action OnMissThresholdReached;
 
         private void OnEnable()
