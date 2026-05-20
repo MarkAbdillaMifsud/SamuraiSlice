@@ -13,7 +13,7 @@ namespace SamuraiSlice
         [SerializeField] private float halfLifetime = 1.5f;
 
         public bool IsSliced { get; private set; }
-        public event Action<Ingredient> Sliced;
+        public static event Action<Ingredient> Sliced;
         public static event Action OnIngredientMissed;
 
         public void Slice(Vector2 swipeDirection)

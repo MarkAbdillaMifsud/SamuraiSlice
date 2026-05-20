@@ -6,8 +6,7 @@ namespace SamuraiSlice
     public class Bomb : MonoBehaviour
     {
         public bool IsSliced { get; private set; }
-        public event Action<Bomb> Sliced;
-        public static event Action OnBombSliced;
+        public static event Action<Bomb> Sliced;
 
         public void Slice(Vector2 swipeDirection)
         {
@@ -18,7 +17,6 @@ namespace SamuraiSlice
 
             IsSliced = true;
             Sliced?.Invoke(this);
-            OnBombSliced?.Invoke();
             Destroy(gameObject);
         }
 

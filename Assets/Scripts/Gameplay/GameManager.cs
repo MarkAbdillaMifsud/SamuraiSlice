@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace SamuraiSlice
 {
@@ -11,6 +13,7 @@ namespace SamuraiSlice
         public event Action<GameState> OnStateChanged;
 
         [SerializeField] private Spawner spawner;
+        [SerializeField] private MissCounter missCounter;
         [SerializeField] private int _missThreshold = 3;
 
 
@@ -23,10 +26,35 @@ namespace SamuraiSlice
             }
             Instance = this;
 
-            MissCounter.OnMissCountChanged += HandleMissCountChanged;
-            Bomb.OnBombSliced += HandleBombSliced;
-
+            if(missCounter != null)
+            {
+                missCounter.OnMissCountChanged += HandleMissCountChanged;
+            }
+            Bomb.Sliced += HandleBombSliced;
+            
             SetState(GameState.Playing);
+        }
+
+        private void OnDestroy()
+        {
+            if (Instance != this)
+            {
+                return;
+            }
+            if(missCounter != null)
+            {
+                missCounter.OnMissCountChanged -= HandleMissCountChanged;
+            }
+            Bomb.Sliced -= HandleBombSliced;
+            Instance = null;
+        }
+
+        private void Update()
+        {
+            if(Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //TODO: Remove after Main Menu implementation
+            }
         }
 
         private void SetState(GameState newState)
@@ -51,7 +79,7 @@ namespace SamuraiSlice
             }
         }
 
-        private void HandleBombSliced()
+        private void HandleBombSliced(Bomb bomb)
         {
             if(CurrentState != GameState.Playing)
             {
