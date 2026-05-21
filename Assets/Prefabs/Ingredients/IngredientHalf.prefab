@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 236031903997880452, guid: 08a866df66f6781479e6538af50c5795, type: 3}
       propertyPath: m_Name
-      value: IngredientHalf Variant
+      value: IngredientHalf
       objectReference: {fileID: 0}
     - target: {fileID: 416511244867883313, guid: 08a866df66f6781479e6538af50c5795, type: 3}
       propertyPath: m_Sprite
@@ -60,5 +60,26 @@ PrefabInstance:
     - {fileID: 1998105401655060254, guid: 08a866df66f6781479e6538af50c5795, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 236031903997880452, guid: 08a866df66f6781479e6538af50c5795, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4098199854963294508}
   m_SourcePrefab: {fileID: 100100000, guid: 08a866df66f6781479e6538af50c5795, type: 3}
+--- !u!1 &2755196619092988582 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 236031903997880452, guid: 08a866df66f6781479e6538af50c5795, type: 3}
+  m_PrefabInstance: {fileID: 2700718858214767138}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-4098199854963294508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2755196619092988582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be7f24b92c8ba340bc440ab34e8d215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.IngredientHalf
+  lifetime: 1.5

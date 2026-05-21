@@ -5,8 +5,7 @@ namespace SamuraiSlice
 {
     public class Spawner : MonoBehaviour
     {
-        [SerializeField] private GameObject ingredientPrefab;
-        [SerializeField] private GameObject bombPrefab;
+        [SerializeField] private IngredientPool pool;
         [SerializeField] private float spawnInterval = 1.0f;
         [SerializeField, Range(0f, 1f)] private float bombChance = 0.05f;
 
@@ -20,6 +19,7 @@ namespace SamuraiSlice
 
         private bool _isSpawning;
         private Coroutine _spawnRoutine;
+        private WaitForSeconds _wait;
 
         private void OnEnable()
         {
@@ -38,6 +38,7 @@ namespace SamuraiSlice
                 return;
             }
             _isSpawning = true;
+            _wait = new WaitForSeconds(spawnInterval);
             _spawnRoutine = StartCoroutine(Spawn());
         }
 
@@ -56,12 +57,19 @@ namespace SamuraiSlice
             while (_isSpawning)
             {
                 Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                GameObject prefab = Random.value < bombChance ? bombPrefab : ingredientPrefab;
+                Vector2 velocity = new(Random.Range(minXVel, maxXVel), Random.Range(minYVel, maxYVel));
 
-                GameObject spawned = Instantiate(prefab, spawnPoint.position, Quaternion.identity);
-                spawned.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(Random.Range(minXVel, maxXVel), Random.Range(minYVel, maxYVel));
+                if (Random.value < bombChance)
+                {
+                    var bomb = pool.Bombs.Get();
+                    bomb.Launch(spawnPoint.position, velocity);
+                } else
+                {
+                    var ingredient = pool.Ingredients.Get();
+                    ingredient.Launch(spawnPoint.position, velocity);
+                }
 
-                yield return new WaitForSeconds(spawnInterval);
+                yield return _wait;
             }
         }
     }

@@ -546,6 +546,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &615942815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 615942817}
+  - component: {fileID: 615942816}
+  m_Layer: 0
+  m_Name: IngredientPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &615942816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615942815}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82736e9391d0bbc418b7575a1b9efb8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.IngredientPool
+  ingredientPrefab: {fileID: 1998105401655060254, guid: 08a866df66f6781479e6538af50c5795, type: 3}
+  halfPrefab: {fileID: -4098199854963294508, guid: d07a3fa82df7d634891ac1fd426ccd42, type: 3}
+  bombPrefab: {fileID: 7866144716003896726, guid: 478c6ca13ff6ea545babca27fe29c547, type: 3}
+  defaultCapacity: 20
+  maxSize: 50
+--- !u!4 &615942817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 615942815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1111,6 +1160,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1212522015981986114, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 1896223100707418666, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.38
+      objectReference: {fileID: 0}
     - target: {fileID: 3590786086398699837, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1159,6 +1216,14 @@ PrefabInstance:
       propertyPath: worldCamera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 6187970589083796984, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: pool
+      value: 
+      objectReference: {fileID: 615942816}
     - target: {fileID: 8954192959719928505, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       propertyPath: m_Name
       value: Systems
@@ -1179,3 +1244,4 @@ SceneRoots:
   - {fileID: 5136371154450960050}
   - {fileID: 2062140328}
   - {fileID: 1803849485}
+  - {fileID: 615942817}

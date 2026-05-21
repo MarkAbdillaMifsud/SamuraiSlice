@@ -14,7 +14,7 @@ namespace SamuraiSlice
 
         [SerializeField] private Spawner spawner;
         [SerializeField] private MissCounter missCounter;
-        [SerializeField] private int _missThreshold = 3;
+        [SerializeField] private int missThreshold = 3;
 
 
         private void Awake()
@@ -73,7 +73,7 @@ namespace SamuraiSlice
             {
                 return;
             }
-            if(misses >= _missThreshold)
+            if(misses >= missThreshold)
             {
                 EndRun();
             }
@@ -97,10 +97,13 @@ namespace SamuraiSlice
                 spawner.StopSpawning();
             }
 
-            var ingredients = FindObjectsByType<Ingredient>();
-            foreach (var ingredient in ingredients)
+            foreach (var ingredient in FindObjectsByType<Ingredient>(FindObjectsInactive.Exclude))
             {
-                Destroy(ingredient.gameObject);
+                ingredient.ForceRelease();
+            }
+            foreach (var bomb in FindObjectsByType<Bomb>(FindObjectsInactive.Exclude))
+            {
+                bomb.ForceRelease();
             }
         }
     }

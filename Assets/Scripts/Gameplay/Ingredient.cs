@@ -4,17 +4,38 @@ using UnityEngine;
 namespace SamuraiSlice
 {
     [RequireComponent(typeof(Collider2D))]
+    [RequireComponent(typeof(Rigidbody2D))]
     public class Ingredient : MonoBehaviour
     {
         [Header("Ingredient Halves")]
-        [SerializeField] private GameObject halfIngredient;
         [SerializeField] private float halfSpeed = 2.0f;
         [SerializeField] private float halfSpin = 200.0f;
-        [SerializeField] private float halfLifetime = 1.5f;
 
         public bool IsSliced { get; private set; }
         public static event Action<Ingredient> Sliced;
         public static event Action OnIngredientMissed;
+
+        private IngredientPool _pool;
+        private Rigidbody2D _rb;
+
+        private void Awake()
+        {
+            _rb = GetComponent<Rigidbody2D>();
+        }
+
+        public void Configure(IngredientPool pool)
+        {
+            _pool = pool;
+        }
+
+        public void Launch(Vector3 position, Vector2 velocity)
+        {
+            transform.SetPositionAndRotation(position, Quaternion.identity);
+            IsSliced = false;
+            gameObject.SetActive(true);
+            _rb.linearVelocity = velocity;
+            _rb.angularVelocity = 0f;
+        }
 
         public void Slice(Vector2 swipeDirection)
         {
@@ -25,7 +46,12 @@ namespace SamuraiSlice
             IsSliced = true;
             Sliced?.Invoke(this);
             SpawnHalves(swipeDirection);
-            Destroy(gameObject);
+            ReturnToPool();
+        }
+
+        public void ForceRelease()
+        {
+            ReturnToPool();
         }
 
         private void SpawnHalves(Vector2 swipeDirection)
@@ -39,21 +65,12 @@ namespace SamuraiSlice
 
         private void SpawnHalf(Vector2 velocity, float spin, bool flipX)
         {
-            GameObject half = Instantiate(halfIngredient, transform.position, transform.rotation);
-
-            if(flipX)
+            if(_pool == null)
             {
-                Vector3 s = half.transform.localScale;
-                half.transform.localScale = new Vector3(-s.x, s.y, s.z);
+                return;
             }
-
-            if(half.TryGetComponent(out Rigidbody2D rb))
-            {
-                rb.linearVelocity = velocity;
-                rb.angularVelocity = spin;
-            }
-
-            Destroy(half, halfLifetime);
+            var half = _pool.Halves.Get();
+            half.Launch(transform.position, transform.rotation, velocity, spin, flipX);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -65,7 +82,7 @@ namespace SamuraiSlice
 
             if(IsSliced)
             {
-                Destroy(gameObject);
+                ReturnToPool();
                 return;
             }
 
@@ -77,7 +94,18 @@ namespace SamuraiSlice
             }
 
             OnIngredientMissed?.Invoke();
-            Destroy(gameObject);
+            ReturnToPool();
+        }
+
+        private void ReturnToPool()
+        {
+            if(_pool != null)
+            {
+                _pool.Ingredients.Release(this);
+            } else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

@@ -3,10 +3,33 @@ using UnityEngine;
 
 namespace SamuraiSlice
 {
+    [RequireComponent(typeof(Rigidbody2D))]
     public class Bomb : MonoBehaviour
     {
         public bool IsSliced { get; private set; }
         public static event Action<Bomb> Sliced;
+
+        private IngredientPool _pool;
+        private Rigidbody2D _rb;
+
+        private void Awake()
+        {
+            _rb = GetComponent<Rigidbody2D>();
+        }
+
+        public void Configure(IngredientPool pool)
+        {
+            _pool = pool;
+        }
+
+        public void Launch(Vector3 position, Vector2 velocity)
+        {
+            transform.SetPositionAndRotation(position, Quaternion.identity);
+            IsSliced = false;
+            gameObject.SetActive(true);
+            _rb.linearVelocity = velocity;
+            _rb.angularVelocity = 0f;
+        }
 
         public void Slice(Vector2 swipeDirection)
         {
@@ -17,8 +40,10 @@ namespace SamuraiSlice
 
             IsSliced = true;
             Sliced?.Invoke(this);
-            Destroy(gameObject);
+            ReturnToPool();
         }
+
+        public void ForceRelease() => ReturnToPool();
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
@@ -29,18 +54,28 @@ namespace SamuraiSlice
 
             if (IsSliced)
             {
-                Destroy(gameObject);
+                ReturnToPool();
                 return;
             }
 
-            //Ensure that MissZone does not trigger if the ingredient has just spawned
-            Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            if (rb != null && rb.linearVelocity.y >= 0f)
+            if (_rb != null && _rb.linearVelocity.y >= 0f)
             {
                 return;
             }
 
-            Destroy(gameObject);
+            ReturnToPool();
+        }
+
+        private void ReturnToPool()
+        {
+            if (_pool != null)
+            {
+                _pool.Bombs.Release(this);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
