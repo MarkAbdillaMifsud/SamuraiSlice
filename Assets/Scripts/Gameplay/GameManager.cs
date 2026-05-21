@@ -69,7 +69,7 @@ namespace SamuraiSlice
 
         private void HandleMissCountChanged(int misses)
         {
-            if(CurrentState != GameState.Playing)
+            if (CurrentState != GameState.Playing)
             {
                 return;
             }
@@ -81,7 +81,7 @@ namespace SamuraiSlice
 
         private void HandleBombSliced(Bomb bomb)
         {
-            if(CurrentState != GameState.Playing)
+            if (CurrentState != GameState.Playing)
             {
                 return;
             }
@@ -90,6 +90,7 @@ namespace SamuraiSlice
 
         private void EndRun()
         {
+            Debug.Log("GAME OVER!");
             SetState(GameState.GameOver);
             if(spawner != null)
             {
@@ -100,8 +101,6 @@ namespace SamuraiSlice
             foreach (var ingredient in ingredients)
             {
                 Destroy(ingredient.gameObject);
-
-                Debug.Log("GAME OVER!");
             }
         }
     }
