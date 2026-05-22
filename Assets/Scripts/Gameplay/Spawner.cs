@@ -21,22 +21,24 @@ namespace SamuraiSlice
         private Coroutine _spawnRoutine;
         private WaitForSeconds _wait;
 
-        private void OnEnable()
-        {
-            StartSpawning();
-        }
-
-        private void OnDisable()
-        {
-            StopSpawning();
-        }
-
         public void StartSpawning()
         {
             if (_isSpawning)
             {
                 return;
             }
+            if(pool == null)
+            {
+                Debug.LogError("[Spawner] Pool reference missing.", this);
+                return;
+            }
+
+            if(spawnPoints == null || spawnPoints.Length == 0)
+            {
+                Debug.LogError("[Spawner] spawnPoints not assigned or empty.", this);
+                return;
+            }
+
             _isSpawning = true;
             _wait = new WaitForSeconds(spawnInterval);
             _spawnRoutine = StartCoroutine(Spawn());

@@ -31,8 +31,15 @@ namespace SamuraiSlice
                 missCounter.OnMissCountChanged += HandleMissCountChanged;
             }
             Bomb.Sliced += HandleBombSliced;
-            
+        }
+
+        private void Start()
+        {
             SetState(GameState.Playing);
+            if(spawner != null)
+            {
+                spawner.StartSpawning();
+            }
         }
 
         private void OnDestroy()

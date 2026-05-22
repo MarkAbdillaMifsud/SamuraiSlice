@@ -546,55 +546,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &615942815
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 615942817}
-  - component: {fileID: 615942816}
-  m_Layer: 0
-  m_Name: IngredientPool
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &615942816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 615942815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82736e9391d0bbc418b7575a1b9efb8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.IngredientPool
-  ingredientPrefab: {fileID: 1998105401655060254, guid: 08a866df66f6781479e6538af50c5795, type: 3}
-  halfPrefab: {fileID: -4098199854963294508, guid: d07a3fa82df7d634891ac1fd426ccd42, type: 3}
-  bombPrefab: {fileID: 7866144716003896726, guid: 478c6ca13ff6ea545babca27fe29c547, type: 3}
-  defaultCapacity: 20
-  maxSize: 50
---- !u!4 &615942817
+--- !u!4 &616391793 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 3590786086398699837, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+  m_PrefabInstance: {fileID: 5136371154450960050}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 615942815}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,6 +735,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1310024680 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+  m_PrefabInstance: {fileID: 1825360947}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1310024681 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4327244478833620196, guid: 5419896302f21044d93e8a43677037af, type: 3}
+  m_PrefabInstance: {fileID: 1825360947}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82736e9391d0bbc418b7575a1b9efb8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.IngredientPool
 --- !u!1 &1554614378
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,6 +967,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1825360947
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 616391793}
+    m_Modifications:
+    - target: {fileID: 667617609114131403, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_Name
+      value: IngredientPool
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.13576
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.17329
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2399627971645953171, guid: 5419896302f21044d93e8a43677037af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5419896302f21044d93e8a43677037af, type: 3}
 --- !u!1 &1978866378
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,7 +1129,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1223,14 +1252,17 @@ PrefabInstance:
     - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       propertyPath: pool
       value: 
-      objectReference: {fileID: 615942816}
+      objectReference: {fileID: 1310024681}
     - target: {fileID: 8954192959719928505, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       propertyPath: m_Name
       value: Systems
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 3590786086398699837, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1310024680}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
 --- !u!1660057539 &9223372036854775807
@@ -1244,4 +1276,3 @@ SceneRoots:
   - {fileID: 5136371154450960050}
   - {fileID: 2062140328}
   - {fileID: 1803849485}
-  - {fileID: 615942817}

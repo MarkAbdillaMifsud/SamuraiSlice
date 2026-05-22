@@ -14,22 +14,43 @@ namespace SamuraiSlice
         [SerializeField] private int defaultCapacity = 20;
         [SerializeField] private int maxSize = 50;
 
-        public ObjectPool<Ingredient> Ingredients { get; private set; }
-        public ObjectPool<IngredientHalf> Halves { get; private set; }
-        public ObjectPool<Bomb> Bombs { get; private set; }
+        private ObjectPool<Ingredient> _ingredients;
+        private ObjectPool<IngredientHalf> _halves;
+        private ObjectPool<Bomb> _bombs;
+        private bool _initialized;
+
+        public ObjectPool<Ingredient> Ingredients { get { EnsureInitialized(); return _ingredients; } }
+        public ObjectPool<IngredientHalf> Halves { get { EnsureInitialized(); return _halves; } }
+        public ObjectPool<Bomb> Bombs { get { EnsureInitialized(); return _bombs; } }
 
         private void Awake()
         {
-            Ingredients = new ObjectPool<Ingredient>(
-                createFunc: CreateIngredient,
-                actionOnGet: null,
-                actionOnRelease: i => i.gameObject.SetActive(false),
-                actionOnDestroy: i => Destroy(i.gameObject),
-                collectionCheck: false,
-                defaultCapacity: defaultCapacity,
-                maxSize: maxSize);
+            EnsureInitialized();
+        }
 
-            Halves = new ObjectPool<IngredientHalf>(
+        private void EnsureInitialized()
+        {
+            if(_initialized)
+            {
+                return;
+            }
+            _initialized = true;
+
+            if (ingredientPrefab == null) Debug.LogError("[IngredientPool] ingredientPrefab not assigned.", this);
+            if (halfPrefab == null) Debug.LogError("[IngredientPool] halfPrefab not assigned.", this);
+            if (bombPrefab == null) Debug.LogError("[IngredientPool] bombPrefab not assigned.", this);
+
+
+            _ingredients = new ObjectPool<Ingredient>(
+                            createFunc: CreateIngredient,
+                            actionOnGet: null,
+                            actionOnRelease: i => i.gameObject.SetActive(false),
+                            actionOnDestroy: i => Destroy(i.gameObject),
+                            collectionCheck: false,
+                            defaultCapacity: defaultCapacity,
+                            maxSize: maxSize);
+
+            _halves = new ObjectPool<IngredientHalf>(
                 createFunc: CreateHalf,
                 actionOnGet: null,
                 actionOnRelease: h => h.gameObject.SetActive(false),
@@ -38,7 +59,7 @@ namespace SamuraiSlice
                 defaultCapacity: defaultCapacity,
                 maxSize: maxSize);
 
-            Bombs = new ObjectPool<Bomb>(
+            _bombs = new ObjectPool<Bomb>(
                 createFunc: CreateBomb,
                 actionOnGet: null,
                 actionOnRelease: b => b.gameObject.SetActive(false),
