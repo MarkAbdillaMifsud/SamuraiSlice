@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 2d996a9f7524c354585e081fdf1c9ada, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -92,7 +92,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!58 &1523130024187105001
 CircleCollider2D:
@@ -169,7 +169,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c918abe114b5164c94a747975b46757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
-  halfIngredient: {fileID: 2755196619092988582, guid: d07a3fa82df7d634891ac1fd426ccd42, type: 3}
   halfSpeed: 2
   halfSpin: 200
-  halfLifetime: 1.5
