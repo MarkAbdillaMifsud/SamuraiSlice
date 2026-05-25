@@ -3,17 +3,20 @@ using UnityEngine;
 namespace SamuraiSlice
 {
     [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(SpriteRenderer))]
     public class IngredientHalf : MonoBehaviour
     {
         [SerializeField] private float lifetime = 1.5f;
 
         private IngredientPool _pool;
         private Rigidbody2D _rb;
+        private SpriteRenderer _sr;
         private float _timeAlive;
 
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
+            _sr = GetComponent<SpriteRenderer>();
         }
 
         public void Configure(IngredientPool pool)
@@ -21,8 +24,13 @@ namespace SamuraiSlice
             _pool = pool;
         }
 
-        public void Launch(Vector3 position, Quaternion rotation, Vector2 velocity, float angularVelocity, bool flipX)
+        public void Launch(Vector3 position, Quaternion rotation, Vector2 velocity, float angularVelocity, bool flipX, Sprite sprite)
         {
+            if(sprite != null)
+            {
+                _sr.sprite = sprite;
+            }
+
             transform.SetPositionAndRotation(position, rotation);
 
             Vector3 s = transform.localScale;

@@ -6,6 +6,7 @@ namespace SamuraiSlice
     public class Spawner : MonoBehaviour
     {
         [SerializeField] private IngredientPool pool;
+        [SerializeField] private IngredientData[] catalog;
         [SerializeField] private float spawnInterval = 1.0f;
         [SerializeField, Range(0f, 1f)] private float bombChance = 0.05f;
 
@@ -20,6 +21,17 @@ namespace SamuraiSlice
         private bool _isSpawning;
         private Coroutine _spawnRoutine;
         private WaitForSeconds _wait;
+        private float _totalWeight;
+
+        private void Awake()
+        {
+            RecomputeTotalWeight();
+        }
+
+        private void OnValidate()
+        {
+            RecomputeTotalWeight();
+        }
 
         public void StartSpawning()
         {
@@ -36,6 +48,12 @@ namespace SamuraiSlice
             if(spawnPoints == null || spawnPoints.Length == 0)
             {
                 Debug.LogError("[Spawner] spawnPoints not assigned or empty.", this);
+                return;
+            }
+
+            if (catalog == null || catalog.Length == 0 || _totalWeight <= 0f)
+            {
+                Debug.LogError("[Spawner] catalog empty or all-zero weights.", this); 
                 return;
             }
 
@@ -67,12 +85,64 @@ namespace SamuraiSlice
                     bomb.Launch(spawnPoint.position, velocity);
                 } else
                 {
-                    var ingredient = pool.Ingredients.Get();
-                    ingredient.Launch(spawnPoint.position, velocity);
+                    var data = PickWeighted();
+                    if(data != null)
+                    {
+                        var ingredient = pool.Ingredients.Get();
+                        ingredient.Launch(spawnPoint.position, velocity, data);
+                    }
                 }
 
                 yield return _wait;
             }
+        }
+
+        private void RecomputeTotalWeight()
+        {
+            _totalWeight = 0f;
+            if(catalog == null)
+            {
+                return;
+            }
+
+            foreach(var d in catalog)
+            {
+                if (d != null && !d.isHazard && d.spawnWeight > 0f)
+                {
+                    _totalWeight += d.spawnWeight;
+                }
+            }
+        }
+
+        private IngredientData PickWeighted()
+        {
+            if(_totalWeight <= 0f)
+            {
+                return null;
+            }
+
+            float r = Random.value * _totalWeight;
+            float cumulative = 0f;
+            foreach(var d in catalog)
+            {
+                if(d == null || d.isHazard || d.spawnWeight <= 0f)
+                {
+                    continue;
+                }
+                cumulative += d.spawnWeight;
+                if(r <= cumulative)
+                {
+                    return d;
+                }
+            }
+            for (int i = catalog.Length - 1; i >= 0; i--)
+            {
+                if (catalog[i] != null && !catalog[i].isHazard)
+                {
+                    return catalog[i];
+                }
+            }
+            return null;
         }
     }
 }

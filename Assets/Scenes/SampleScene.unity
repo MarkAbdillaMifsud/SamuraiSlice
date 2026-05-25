@@ -1468,6 +1468,30 @@ PrefabInstance:
       propertyPath: pool
       value: 
       objectReference: {fileID: 1310024681}
+    - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: catalog.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: 'catalog.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 691494813757faf469b9851e3854f4eb, type: 2}
+    - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: 'catalog.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 15f837f807eed7e4caca9735044a1130, type: 2}
+    - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: 'catalog.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a45e5396976483a41890945a7d72544b, type: 2}
+    - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: 'catalog.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 6c973549d899e5f4689b9e1f19d20183, type: 2}
+    - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: 'catalog.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ccba720423a7f540b942c959983b698, type: 2}
     - target: {fileID: 8954192959719928505, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       propertyPath: m_Name
       value: Systems

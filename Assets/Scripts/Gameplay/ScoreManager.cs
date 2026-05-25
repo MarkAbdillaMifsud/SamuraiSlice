@@ -22,6 +22,12 @@ namespace SamuraiSlice
 
         private void HandleSliced(Ingredient ingredient)
         {
+            int points = ingredient.Data != null ? ingredient.Data.points : 0;
+            if (points == 0)
+            {
+                return;
+            }
+
             CurrentScore += BaseSlicePoints;
             OnScoreChanged?.Invoke(CurrentScore);
         }

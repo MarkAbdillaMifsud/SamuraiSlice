@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23ee2ee673fbda04abb2399c6984f5a1, type: 3}
+  m_Name: Tamago
+  m_EditorClassIdentifier: Assembly-CSharp::IngredientData
+  ingredientName: Tamago
+  wholeSprite: {fileID: 21300000, guid: cb6e19879df8742439185a0bc8e84f25, type: 3}
+  halfASprite: {fileID: 21300000, guid: d78c852ad52f0ad47bf2707c658abfb5, type: 3}
+  halfBSprite: {fileID: 21300000, guid: 54b9b032c6422ad47812e5df51b11ebf, type: 3}
+  points: 5
+  spawnWeight: 1
+  isHazard: 0
+  flashOnSpawn: 0
