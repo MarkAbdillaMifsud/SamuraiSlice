@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: cb6e19879df8742439185a0bc8e84f25
+guid: 54b9b032c6422ad47812e5df51b11ebf
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 926062964252716819
-    second: tamago_master_0
+      213: 9167307463547478932
+    second: tamago_right_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,12 +113,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tamago_master_0
+      name: tamago_right_0
       rect:
         serializedVersion: 2
-        x: 11
+        x: 63
         y: 42
-        width: 106
+        width: 54
         height: 46
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 31fade70c590adc00800000000000000
-      internalID: 926062964252716819
+      spriteID: 493e88f4191d83f70800000000000000
+      internalID: 9167307463547478932
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tamago_master_0: 926062964252716819
+      tamago_right_0: 9167307463547478932
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

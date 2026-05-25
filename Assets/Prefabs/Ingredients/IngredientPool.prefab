@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82736e9391d0bbc418b7575a1b9efb8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.IngredientPool
-  ingredientPrefab: {fileID: 6409833298046547838, guid: 1ed18f108c1520d4d888c8794aa77519, type: 3}
-  halfPrefab: {fileID: 5221128159805721873, guid: 6915c2791a8c8644f9888edfd33c8ff7, type: 3}
+  ingredientPrefab: {fileID: 3327385098955116887, guid: 679fcdda27e62504bb42ff13fcde1080, type: 3}
+  halfPrefab: {fileID: 6181606088180028772, guid: 0bfa6727d23999b4e907e99fb0b628ee, type: 3}
   bombPrefab: {fileID: 7866144716003896726, guid: 478c6ca13ff6ea545babca27fe29c547, type: 3}
   defaultCapacity: 20
   maxSize: 50
