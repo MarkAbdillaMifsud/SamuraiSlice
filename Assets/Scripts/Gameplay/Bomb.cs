@@ -11,10 +11,17 @@ namespace SamuraiSlice
 
         private IngredientPool _pool;
         private Rigidbody2D _rb;
+        private Vector3 _baseScale;
 
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
+            _baseScale = transform.localScale;
+        }
+
+        private void Update()
+        {
+            transform.localScale = _baseScale * (1f + 0.05f * Mathf.Sin(Time.time * 4f));
         }
 
         public void Configure(IngredientPool pool)
