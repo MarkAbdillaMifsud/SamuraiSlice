@@ -5,8 +5,18 @@ namespace SamuraiSlice
 {
     public class ScoreManager : MonoBehaviour
     {
+        [SerializeField] private ComboTracker comboTracker;
+
         public int CurrentScore { get; private set; }
         public event Action<int> OnScoreChanged;
+
+        private void Awake()
+        {
+            if (comboTracker == null)
+            {
+                Debug.LogError("[ScoreManager] No ComboTracker reference assigned - scores will not be multiplied.", this);
+            }
+        }
 
         private void OnEnable()
         {
@@ -26,7 +36,9 @@ namespace SamuraiSlice
                 return;
             }
 
-            CurrentScore += ingredient.Data.points;
+            int multiplier = comboTracker != null ? comboTracker.RegisterSlice() : 1;
+
+            CurrentScore += points * multiplier;
             OnScoreChanged?.Invoke(CurrentScore);
         }
     }

@@ -18,6 +18,9 @@ namespace SamuraiSlice
         [Header("Sampling")]
         [SerializeField] private float minSampleDistance = 0.02f;
 
+        public event Action OnPressStarted;
+        public event Action OnPressReleased;
+
         private InputAction _pressAction;
         private InputAction _positionAction;
 
@@ -98,9 +101,14 @@ namespace SamuraiSlice
         {
             IsSwiping = true;
             _hasFirstSample = false;
+            OnPressStarted?.Invoke();
         }
 
-        private void HandlePressEnded(InputAction.CallbackContext _) => ResetSwipe();
+        private void HandlePressEnded(InputAction.CallbackContext _)
+        {
+            ResetSwipe();
+            OnPressReleased?.Invoke();
+        }
 
         private void ResetSwipe()
         {

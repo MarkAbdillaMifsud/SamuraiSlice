@@ -998,6 +998,7 @@ MonoBehaviour:
   mixer: {fileID: 24100000, guid: 64e918be708a59a4fa3e71c27b2d8db9, type: 2}
   calmSnapshot: {fileID: 24500006, guid: 64e918be708a59a4fa3e71c27b2d8db9, type: 2}
   energisedSnapshot: {fileID: -8646799022970543953, guid: 64e918be708a59a4fa3e71c27b2d8db9, type: 2}
+  comboTracker: {fileID: 5136371154450960053}
   transitionTime: 0.6
 --- !u!82 &1527805167
 AudioSource:
@@ -1014,7 +1015,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1111,7 +1112,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1785,6 +1786,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4519596194439393710, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: comboTracker
+      value: 
+      objectReference: {fileID: 5136371154450960053}
     - target: {fileID: 4836218213211258044, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       propertyPath: bladeTrail
       value: 
@@ -1801,6 +1806,10 @@ PrefabInstance:
       propertyPath: pool
       value: 
       objectReference: {fileID: 1310024681}
+    - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: bombChance
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8099518716558809105, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       propertyPath: catalog.Array.size
       value: 5
@@ -1835,8 +1844,42 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3590786086398699837, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1310024680}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2906902546236008069, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5136371154450960053}
   m_SourcePrefab: {fileID: 100100000, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+--- !u!1 &5136371154450960051 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2906902546236008069, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+  m_PrefabInstance: {fileID: 5136371154450960050}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5136371154450960052 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6020081472811484046, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+  m_PrefabInstance: {fileID: 5136371154450960050}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5136371154450960051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c5750ef053388f4ba98b39531252c7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.SwipeInput
+--- !u!114 &5136371154450960053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5136371154450960051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9ad3fb473f15fa459e564e10a17f965, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.ComboTracker
+  swipeInput: {fileID: 5136371154450960052}
+  maxMultiplier: 5
+  energisedThreshold: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

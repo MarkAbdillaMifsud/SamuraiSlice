@@ -9,7 +9,8 @@ AudioMixerSnapshotController:
   m_Name: Energised
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 82783b6abc198de47adfe839dd2a5d40
-  m_FloatValues: {}
+  m_FloatValues:
+    6dbf5ab66743d754c808b4b3324188e5: -7.436929
   m_TransitionOverrides: {}
 --- !u!243 &-7518418809914327065
 AudioMixerGroupController:
