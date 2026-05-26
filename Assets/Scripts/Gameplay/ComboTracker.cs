@@ -16,6 +16,7 @@ namespace SamuraiSlice
 
         public event Action OnEnergisedEntered;
         public event Action OnStrokeEnded;
+        public event Action<int> OnMultiplierChanged;
 
         private int strokeSliceEvents;
         private int? frameLockMultiplier;
@@ -83,6 +84,7 @@ namespace SamuraiSlice
             }
             strokeSliceEvents += 1;
             frameLockMultiplier = null;
+            OnMultiplierChanged?.Invoke(CurrentMultiplier);
         }
 
         private void HandlePressStarted()
@@ -90,6 +92,7 @@ namespace SamuraiSlice
             strokeSliceEvents = 0;
             frameLockMultiplier = null;
             energisedThisStroke = false;
+            OnMultiplierChanged?.Invoke(CurrentMultiplier);
         }
 
         private void HandlePressReleased()
