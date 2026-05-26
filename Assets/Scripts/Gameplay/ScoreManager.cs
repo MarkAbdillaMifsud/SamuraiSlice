@@ -5,8 +5,6 @@ namespace SamuraiSlice
 {
     public class ScoreManager : MonoBehaviour
     {
-        const int BaseSlicePoints = 5;
-
         public int CurrentScore { get; private set; }
         public event Action<int> OnScoreChanged;
 
@@ -28,7 +26,7 @@ namespace SamuraiSlice
                 return;
             }
 
-            CurrentScore += BaseSlicePoints;
+            CurrentScore += ingredient.Data.points;
             OnScoreChanged?.Invoke(CurrentScore);
         }
     }

@@ -30,6 +30,7 @@ namespace SamuraiSlice
             {
                 missCounter.OnMissCountChanged += HandleMissCountChanged;
             }
+            Bomb.DetonationStarted += HandleBombDetonation;
             Bomb.Sliced += HandleBombSliced;
         }
 
@@ -52,6 +53,7 @@ namespace SamuraiSlice
             {
                 missCounter.OnMissCountChanged -= HandleMissCountChanged;
             }
+            Bomb.DetonationStarted -= HandleBombDetonation;
             Bomb.Sliced -= HandleBombSliced;
             Instance = null;
         }
@@ -83,6 +85,19 @@ namespace SamuraiSlice
             if(misses >= missThreshold)
             {
                 EndRun();
+            }
+        }
+
+        private void HandleBombDetonation()
+        {
+            if(CurrentState != GameState.Playing)
+            {
+                return;
+            }
+            SetState(GameState.GameOver);
+            if (spawner != null)
+            {
+                spawner.StopSpawning();
             }
         }
 

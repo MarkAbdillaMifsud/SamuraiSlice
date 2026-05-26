@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -18,6 +19,9 @@ namespace SamuraiSlice
         private ObjectPool<IngredientHalf> _halves;
         private ObjectPool<Bomb> _bombs;
         private bool _initialized;
+
+        private readonly HashSet<Ingredient> _activeIngredients = new();
+        public IReadOnlyCollection<Ingredient> ActiveIngredients => _activeIngredients;
 
         public ObjectPool<Ingredient> Ingredients { get { EnsureInitialized(); return _ingredients; } }
         public ObjectPool<IngredientHalf> Halves { get { EnsureInitialized(); return _halves; } }
@@ -42,13 +46,13 @@ namespace SamuraiSlice
 
 
             _ingredients = new ObjectPool<Ingredient>(
-                            createFunc: CreateIngredient,
-                            actionOnGet: null,
-                            actionOnRelease: i => i.gameObject.SetActive(false),
-                            actionOnDestroy: i => Destroy(i.gameObject),
-                            collectionCheck: false,
-                            defaultCapacity: defaultCapacity,
-                            maxSize: maxSize);
+                createFunc: CreateIngredient,
+                actionOnGet: i => _activeIngredients.Add(i),
+                actionOnRelease: i => { _activeIngredients.Remove(i); i.gameObject.SetActive(false); },
+                actionOnDestroy: i => Destroy(i.gameObject),
+                collectionCheck: false,
+                defaultCapacity: defaultCapacity,
+                maxSize: maxSize);
 
             _halves = new ObjectPool<IngredientHalf>(
                 createFunc: CreateHalf,

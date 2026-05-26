@@ -26,6 +26,10 @@ namespace SamuraiSlice
             {
                 return;
             }
+            if(GameManager.Instance != null && GameManager.Instance.CurrentState != GameManager.GameState.Playing)
+            {
+                return;
+            }
 
             CurrentMisses++;
             Debug.Log($"[MissCounter] Miss {CurrentMisses}/{maxMisses}");
