@@ -9,6 +9,7 @@ namespace SamuraiSlice
 
         public int CurrentScore { get; private set; }
         public event Action<int> OnScoreChanged;
+        public event Action<int, int, Vector3, Color> OnSliceScored;
 
         private void Awake()
         {
@@ -37,9 +38,13 @@ namespace SamuraiSlice
             }
 
             int multiplier = comboTracker != null ? comboTracker.RegisterSlice() : 1;
+            int finalPoints = points * multiplier;
 
-            CurrentScore += points * multiplier;
+            CurrentScore += finalPoints;
             OnScoreChanged?.Invoke(CurrentScore);
+
+            Color accent = ingredient.Data != null ? ingredient.Data.accentColor : Color.white;
+            OnSliceScored?.Invoke(finalPoints, multiplier, ingredient.transform.position, accent);
         }
     }
 }

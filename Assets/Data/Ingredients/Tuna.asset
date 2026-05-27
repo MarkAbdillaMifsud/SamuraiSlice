@@ -20,3 +20,4 @@ MonoBehaviour:
   spawnWeight: 0.15
   isHazard: 0
   flashOnSpawn: 1
+  accentColor: {r: 0.75686276, g: 0.15294118, b: 0.1764706, a: 1}

@@ -11,6 +11,7 @@ public class IngredientData : ScriptableObject
     public float spawnWeight;
     public bool isHazard;
     public bool flashOnSpawn;
+    public Color accentColor = Color.white;
 
     private void OnValidate()
     {
