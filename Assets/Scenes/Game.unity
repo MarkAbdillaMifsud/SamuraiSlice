@@ -1116,6 +1116,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82736e9391d0bbc418b7575a1b9efb8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.IngredientPool
+--- !u!1 &1398249012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1398249014}
+  - component: {fileID: 1398249013}
+  m_Layer: 0
+  m_Name: SettingsBootstrap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1398249013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398249012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6acfa3dcbc45ab24ab63155970e896a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.SettingsBootstrap
+  mixer: {fileID: 24100000, guid: 64e918be708a59a4fa3e71c27b2d8db9, type: 2}
+--- !u!4 &1398249014
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1398249012}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1554614378
 GameObject:
   m_ObjectHideFlags: 0
@@ -2265,3 +2310,4 @@ SceneRoots:
   - {fileID: 1803849485}
   - {fileID: 1049397191}
   - {fileID: 518528719}
+  - {fileID: 1398249014}

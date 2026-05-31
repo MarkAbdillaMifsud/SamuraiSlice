@@ -102,6 +102,8 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: 881258292845d7e41a82eb91ec66216a
+    name: MasterVolume
   - guid: bcab830e97cc6144da73c194072c402a
     name: MusicVolume
   - guid: 6dbf5ab66743d754c808b4b3324188e5
@@ -119,7 +121,7 @@ AudioMixerController:
     - 3eacd7d94378a5241bda2582064cd7cb
     name: View
   m_CurrentViewIndex: 0
-  m_TargetSnapshot: {fileID: -8646799022970543953}
+  m_TargetSnapshot: {fileID: 24500006}
 --- !u!243 &24300002
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
