@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,10 @@ namespace SamuraiSlice
         [SerializeField] private Spawner spawner;
         [SerializeField] private MissCounter missCounter;
         [SerializeField] private int missThreshold = 3;
+        [SerializeField] private string gameOverSceneName = "GameOver";
+        [SerializeField] private float gameOverDelay = 1.5f;
+
+        private bool _isEndingRun;
 
 
         private void Awake()
@@ -60,7 +65,12 @@ namespace SamuraiSlice
 
         private void Update()
         {
-            if(Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+            if (CurrentState != GameState.Playing)
+            {
+                return;
+            }
+
+            if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); //TODO: Remove after Main Menu implementation
             }
@@ -103,17 +113,20 @@ namespace SamuraiSlice
 
         private void HandleBombSliced(Bomb bomb)
         {
-            if (CurrentState != GameState.Playing)
-            {
-                return;
-            }
             EndRun();
         }
 
         private void EndRun()
         {
-            Debug.Log("GAME OVER!");
+            if(_isEndingRun)
+            {
+                return;
+            }
+            _isEndingRun = true;
+
             SetState(GameState.GameOver);
+            Debug.Log(_isEndingRun);
+
             if(spawner != null)
             {
                 spawner.StopSpawning();
@@ -127,6 +140,15 @@ namespace SamuraiSlice
             {
                 bomb.ForceRelease();
             }
+
+            StartCoroutine(LoadGameOverScene());
+        }
+
+        private IEnumerator LoadGameOverScene()
+        {
+            Debug.Log("Started Coroutine");
+            yield return new WaitForSecondsRealtime(gameOverDelay);
+            SceneManager.LoadScene(gameOverSceneName);
         }
     }
 }

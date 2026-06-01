@@ -2001,6 +2001,19 @@ MonoBehaviour:
   prefab: {fileID: 8865020474536686368, guid: ea2ad580c87584f42b0b185363dab074, type: 3}
   defaultCapacity: 10
   maxSize: 20
+--- !u!114 &1986945625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986945612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cbd6b72fdd52cb45bdc6925714fc1fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.HighScoreManager
+  scoreManager: {fileID: 668640544}
 --- !u!1 &2062140324
 GameObject:
   m_ObjectHideFlags: 0
@@ -2262,6 +2275,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3596214338467228322, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1986945624}
+    - targetCorrespondingSourceObject: {fileID: 3596214338467228322, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1986945625}
     - targetCorrespondingSourceObject: {fileID: 2906902546236008069, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5136371154450960053}
