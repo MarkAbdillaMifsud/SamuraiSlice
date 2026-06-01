@@ -21,7 +21,6 @@ namespace SamuraiSlice
 
         private bool _isEndingRun;
 
-
         private void Awake()
         {
             if(Instance != null && Instance != this)
@@ -41,6 +40,7 @@ namespace SamuraiSlice
 
         private void Start()
         {
+            Time.timeScale = 1f;
             SetState(GameState.Playing);
             if(spawner != null)
             {
@@ -84,6 +84,26 @@ namespace SamuraiSlice
             }
             CurrentState = newState;
             OnStateChanged?.Invoke(newState);
+        }
+
+        public void Pause()
+        {
+            if(CurrentState != GameState.Playing)
+            {
+                return;
+            }
+            Time.timeScale = 0f;
+            SetState(GameState.Paused);
+        }
+
+        public void Resume()
+        {
+            if (CurrentState != GameState.Paused)
+            {
+                return;
+            }
+            Time.timeScale = 1f;
+            SetState(GameState.Playing);
         }
 
         private void HandleMissCountChanged(int misses)
