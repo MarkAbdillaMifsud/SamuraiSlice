@@ -11,28 +11,32 @@ namespace SamuraiSlice
 
         private int _cachedLastScore;
 
+        private void Awake()
+        {
+            _cachedLastScore = PlayerPrefs.GetInt("SamuraiSlice_LastScore", 0);
+        }
+
         private void Start()
         {
-            if (leaderboardManager == null)
+            PopulateFinalScore();
+        }
+
+        public void ShowLeaderboard()
+        {
+            if(leaderboardManager == null)
             {
-                Debug.Log("[GameOverBinder] LeaderboardManager not assigned.", this);
+                Debug.LogWarning("[GameOverBinder] LeaderboardManager not assigned.", this);
                 return;
             }
 
-            leaderboardManager.SubmitLastRun();
-
-            int lastScore = PlayerPrefs.GetInt("SamuraiSlice_LastScore", 0);
-
-            PopulateFinalScore();
             PopulateLeaderboard();
         }
 
         private void PopulateFinalScore()
         {
-            int displayed = _cachedLastScore;
             if(finalScoreText != null)
             {
-                finalScoreText.text = FormatScore(displayed);
+                finalScoreText.text = FormatScore(_cachedLastScore);
             }
         }
 
@@ -61,11 +65,6 @@ namespace SamuraiSlice
         private static string FormatScore(int score)
         {
             return score.ToString("#,##0");
-        }
-
-        private void Awake()
-        {
-            _cachedLastScore = PlayerPrefs.GetInt("SamuraiSlice_LastScore", 0);
         }
     }
 }
