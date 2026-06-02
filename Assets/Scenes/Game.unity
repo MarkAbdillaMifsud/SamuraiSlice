@@ -3071,6 +3071,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.PauseController
   pausePanel: {fileID: 1685762369}
+  pauseButton: {fileID: 1687695329}
+  sliceDetector: {fileID: 2059411419}
+--- !u!114 &2059411419 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3098160434478109441, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+  m_PrefabInstance: {fileID: 5136371154450960050}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4924c235dd99c544ca1e1de3d0e23e02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.SliceDetector
 --- !u!1 &2062140324
 GameObject:
   m_ObjectHideFlags: 0
