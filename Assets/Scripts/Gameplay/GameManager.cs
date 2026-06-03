@@ -9,12 +9,13 @@ namespace SamuraiSlice
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
-        public enum GameState { Menu, Playing, Paused, GameOver }
+        public enum GameState { Menu, Tutorial, Playing, Paused, GameOver }
         public GameState CurrentState { get; private set; }
         public event Action<GameState> OnStateChanged;
 
         [SerializeField] private Spawner spawner;
         [SerializeField] private MissCounter missCounter;
+        [SerializeField] private TutorialOverlay tutorialOverlay;
         [SerializeField] private int missThreshold = 3;
         [SerializeField] private string gameOverSceneName = "GameOver";
         [SerializeField] private float gameOverDelay = 1.5f;
@@ -40,11 +41,14 @@ namespace SamuraiSlice
 
         private void Start()
         {
-            Time.timeScale = 1f;
-            SetState(GameState.Playing);
-            if(spawner != null)
+            if(PlayerPrefs.GetInt("tutorial_seen_v1", 0) == 0 && tutorialOverlay != null)
             {
-                spawner.StartSpawning();
+                SetState(GameState.Tutorial);
+                tutorialOverlay.OnDismissed += HandleTutorialDismissed;
+                tutorialOverlay.Show();
+            } else
+            {
+                BeginPlaying();
             }
         }
 
@@ -134,6 +138,21 @@ namespace SamuraiSlice
         private void HandleBombSliced(Bomb bomb)
         {
             EndRun();
+        }
+
+        private void HandleTutorialDismissed()
+        {
+            tutorialOverlay.OnDismissed -= HandleTutorialDismissed;
+            BeginPlaying();
+        }
+
+        private void BeginPlaying()
+        {
+            SetState(GameState.Playing);
+            if (spawner != null)
+            {
+                spawner.StartSpawning();
+            }
         }
 
         private void EndRun()
