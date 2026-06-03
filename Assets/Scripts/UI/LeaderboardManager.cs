@@ -34,20 +34,31 @@ namespace SamuraiSlice
             _data = Load();
         }
 
-        public void SubmitLastRun()
+        public int SubmitLastRun()
         {
             int score = PlayerPrefs.GetInt(LastScoreKey, 0);
 
             if(score <= 0)
             {
-                return;
+                return -1;
             }
 
             string playerName = GetPlayerName();
-            var entry = new Entry { name = playerName, score = score };
+            var newEntry = new Entry { name = playerName, score = score };
 
-            _data.entries.Add(entry);
+            _data.entries.Add(newEntry);
             _data.entries.Sort((a, b) => b.score.CompareTo(a.score));
+
+            int rank = -1;
+            for(int i = 0; i < Math.Min(_data.entries.Count, MaxEntries); i++)
+            {
+                if(ReferenceEquals(_data.entries[i], newEntry))
+                {
+                    rank = i + 1;
+                    break;
+                }
+            }
+
             if(_data.entries.Count > MaxEntries)
             {
                 _data.entries.RemoveRange(MaxEntries, _data.entries.Count - MaxEntries);
@@ -62,6 +73,8 @@ namespace SamuraiSlice
 
             PlayerPrefs.SetInt(LastScoreKey, 0);
             PlayerPrefs.Save();
+
+            return rank;
         }
 
         public static string GetPlayerName()

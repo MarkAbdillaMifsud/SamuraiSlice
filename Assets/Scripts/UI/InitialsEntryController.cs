@@ -13,7 +13,8 @@ namespace SamuraiSlice
 
         private void Start()
         {
-            
+            PrePopulateSlots();
+            SetPhase(initialsVisible: true);
         }
 
         public void OnConfirmPressed()
@@ -25,13 +26,15 @@ namespace SamuraiSlice
             }
 
             LeaderboardManager.SetPlayerName(sb.ToString());
+
+            int rank = -1;
             if(leaderboardManager != null)
             {
-                leaderboardManager.SubmitLastRun();
+                rank = leaderboardManager.SubmitLastRun();
             }
 
             SetPhase(initialsVisible: false);
-            gameOverBinder?.ShowLeaderboard();
+            gameOverBinder?.ShowLeaderboard(rank);
         }
 
         private void PrePopulateSlots()

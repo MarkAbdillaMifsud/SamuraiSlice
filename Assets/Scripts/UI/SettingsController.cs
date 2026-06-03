@@ -6,6 +6,7 @@ namespace SamuraiSlice
 {
     public class SettingsController : MonoBehaviour
     {
+        [SerializeField] private LeaderboardManager leaderboardManager;
         [SerializeField] private AudioMixer mixer;
         [SerializeField] private Slider masterVolumeSlider;
         [SerializeField] private Toggle musicToggle;
@@ -68,8 +69,18 @@ namespace SamuraiSlice
 
         public void OnConfirmResetClicked()
         {
-            PlayerPrefs.DeleteKey("HighScores_v1");
-            PlayerPrefs.Save();
+            if(leaderboardManager != null)
+            {
+                leaderboardManager.ResetLeaderboard();
+            } else
+            {
+                Debug.LogWarning("[SettingsController] leaderboardManager not assigned; " +
+                                 "falling back to direct PlayerPrefs deletion.", this);
+                PlayerPrefs.DeleteKey("SamuraiSlice_Leaderboard");
+                PlayerPrefs.DeleteKey("SamuraiSlice_HighScore");
+                PlayerPrefs.Save();
+            }
+
             if (confirmationPanel != null)
                 confirmationPanel.SetActive(false);
         }

@@ -1,5 +1,7 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SamuraiSlice
 {
@@ -8,8 +10,13 @@ namespace SamuraiSlice
         [SerializeField] private LeaderboardManager leaderboardManager;
         [SerializeField] private TMP_Text finalScoreText;
         [SerializeField] private TMP_Text[] entryTexts;
+        [SerializeField] private Image[] rowHighlights;
+        [SerializeField] private Color highlightColour = new Color(1f, 0.85f, 0f, 0.45f);
+        [SerializeField] private float pulseDuration = 0.35f;
+
 
         private int _cachedLastScore;
+        private Coroutine _pulseRoutine;
 
         private void Awake()
         {
@@ -21,7 +28,7 @@ namespace SamuraiSlice
             PopulateFinalScore();
         }
 
-        public void ShowLeaderboard()
+        public void ShowLeaderboard(int newEntryRank = -1)
         {
             if(leaderboardManager == null)
             {
@@ -30,6 +37,19 @@ namespace SamuraiSlice
             }
 
             PopulateLeaderboard();
+
+            bool isRankValid = newEntryRank >= 1 && rowHighlights != null && newEntryRank <= rowHighlights.Length && rowHighlights[newEntryRank - 1] != null;
+
+            if (isRankValid) {
+                if(_pulseRoutine != null)
+                {
+                    StopCoroutine( _pulseRoutine );
+                }
+                _pulseRoutine = StartCoroutine(PulseRow(rowHighlights[newEntryRank - 1]));
+            }
+            {
+                
+            }
         }
 
         private void PopulateFinalScore()
@@ -60,6 +80,35 @@ namespace SamuraiSlice
                     entryTexts[i].gameObject.SetActive(false);
                 }
             }
+        }
+
+        private IEnumerator PulseRow(Image highlight)
+        {
+            yield return FadeHighlight(highlight, fromAlpha: 0f, toAlpha: highlightColour.a);
+
+            yield return FadeHighlight(highlight, fromAlpha: highlightColour.a, toAlpha: 0f);
+
+            Color tint = highlightColour;
+            tint.a = highlightColour.a * 0.4f;
+            highlight.color = tint;
+            _pulseRoutine = null;
+        }
+
+        private IEnumerator FadeHighlight(Image highlight, float fromAlpha, float toAlpha)
+        {
+            float elapsed = 0f;
+            Color c = highlightColour;
+
+            while (elapsed < pulseDuration)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                c.a = Mathf.Lerp(fromAlpha, toAlpha, Mathf.Clamp01(elapsed / pulseDuration));
+                highlight.color = c;
+                yield return null;
+            }
+
+            c.a = toAlpha;
+            highlight.color = c;
         }
 
         private static string FormatScore(int score)
