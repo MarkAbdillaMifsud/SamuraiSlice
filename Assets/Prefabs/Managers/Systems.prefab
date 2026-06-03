@@ -175,7 +175,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.GameManager
   spawner: {fileID: 8099518716558809105}
   missCounter: {fileID: 7554610657224366930}
-  _missThreshold: 3
+  tutorialOverlay: {fileID: 0}
+  missThreshold: 3
+  gameOverSceneName: GameOver
+  gameOverDelay: 1.5
 --- !u!1 &3899912623626673642
 GameObject:
   m_ObjectHideFlags: 0
@@ -299,10 +302,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab59dbecc4064774e88b632a4fd8b221, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.Spawner
-  ingredientPrefab: {fileID: 236031903997880452, guid: 08a866df66f6781479e6538af50c5795, type: 3}
-  bombPrefab: {fileID: 2826492129624285614, guid: 478c6ca13ff6ea545babca27fe29c547, type: 3}
-  spawnInterval: 1
-  bombChance: 0.5
+  spawnCurve: {fileID: 11400000, guid: ffa5c9554808822448364fe699b97eba, type: 2}
+  pool: {fileID: 4327244478833620196, guid: 5419896302f21044d93e8a43677037af, type: 3}
+  catalog:
+  - {fileID: 11400000, guid: 6c973549d899e5f4689b9e1f19d20183, type: 2}
+  - {fileID: 11400000, guid: 691494813757faf469b9851e3854f4eb, type: 2}
+  - {fileID: 11400000, guid: 15f837f807eed7e4caca9735044a1130, type: 2}
+  - {fileID: 11400000, guid: a45e5396976483a41890945a7d72544b, type: 2}
+  - {fileID: 11400000, guid: 1ccba720423a7f540b942c959983b698, type: 2}
+  slotDelay: 0.05
   minXVel: -3
   maxXVel: 3
   minYVel: 9
@@ -355,6 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5604930c8f9156844be8502c0480f76e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.ScoreManager
+  comboTracker: {fileID: 0}
 --- !u!1 &7623347299676534165
 GameObject:
   m_ObjectHideFlags: 0

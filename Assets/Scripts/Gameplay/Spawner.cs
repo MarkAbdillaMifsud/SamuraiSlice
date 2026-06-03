@@ -5,10 +5,10 @@ namespace SamuraiSlice
 {
     public class Spawner : MonoBehaviour
     {
+        [SerializeField] private SpawnCurve spawnCurve;
         [SerializeField] private IngredientPool pool;
         [SerializeField] private IngredientData[] catalog;
-        [SerializeField] private float spawnInterval = 1.0f;
-        [SerializeField, Range(0f, 1f)] private float bombChance = 0.05f;
+        [SerializeField] private float slotDelay = 0.05f;
 
         [Header("Ingredient Velocity")]
         [SerializeField] private float minXVel = -3.0f;
@@ -20,18 +20,7 @@ namespace SamuraiSlice
 
         private bool _isSpawning;
         private Coroutine _spawnRoutine;
-        private WaitForSeconds _wait;
-        private float _totalWeight;
-
-        private void Awake()
-        {
-            RecomputeTotalWeight();
-        }
-
-        private void OnValidate()
-        {
-            RecomputeTotalWeight();
-        }
+        private float _runStartTime;
 
         public void StartSpawning()
         {
@@ -39,6 +28,13 @@ namespace SamuraiSlice
             {
                 return;
             }
+
+            if (spawnCurve == null)
+            {
+                Debug.LogError("[Spawner] SpawnCurve reference missing.", this);
+                return;
+            }
+
             if(pool == null)
             {
                 Debug.LogError("[Spawner] Pool reference missing.", this);
@@ -51,20 +47,27 @@ namespace SamuraiSlice
                 return;
             }
 
-            if (catalog == null || catalog.Length == 0 || _totalWeight <= 0f)
+            if (catalog == null || catalog.Length == 0)
             {
-                Debug.LogError("[Spawner] catalog empty or all-zero weights.", this); 
+                Debug.LogError("[Spawner] catalog empty.", this); 
+                return;
+            }
+
+            if (spawnCurve.ingredientWeights == null || spawnCurve.ingredientWeights.Length != catalog.Length)
+            {
+                Debug.LogError("[Spawner] SpawnCurve ingredientWeights must match catalog length.", this);
                 return;
             }
 
             _isSpawning = true;
-            _wait = new WaitForSeconds(spawnInterval);
+            _runStartTime = Time.time;
             _spawnRoutine = StartCoroutine(Spawn());
         }
 
         public void StopSpawning()
         {
             _isSpawning = false;
+
             if (_spawnRoutine != null)
             {
                 StopCoroutine(_spawnRoutine);
@@ -76,65 +79,98 @@ namespace SamuraiSlice
         {
             while (_isSpawning)
             {
-                Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                Vector2 velocity = new(Random.Range(minXVel, maxXVel), Random.Range(minYVel, maxYVel));
+                float elapsedRunTime = Time.time - _runStartTime;
+                Debug.Log($"[Spawner] t={elapsedRunTime:0.0}, interval={spawnCurve.GetSpawnInterval(elapsedRunTime):0.00}, bomb={spawnCurve.GetBombProbability(elapsedRunTime):0.00}");
 
-                if (Random.value < bombChance)
+                Vector2 groupSizeRange = spawnCurve.GetGroupSizeRange(elapsedRunTime);
+                int minGroupSize = Mathf.RoundToInt(groupSizeRange.x);
+                int maxGroupSize = Mathf.RoundToInt(groupSizeRange.y);
+
+                minGroupSize = Mathf.Max(1, minGroupSize);
+                maxGroupSize = Mathf.Max(minGroupSize, maxGroupSize);
+
+                int groupSize = Random.Range(minGroupSize, maxGroupSize + 1);
+
+                for (int i = 0; i < groupSize; i++)
                 {
-                    var bomb = pool.Bombs.Get();
-                    bomb.Launch(spawnPoint.position, velocity);
-                } else
-                {
-                    var data = PickWeighted();
-                    if(data != null)
+                    SpawnSlot(elapsedRunTime);
+
+                    if (i < groupSize - 1)
                     {
-                        var ingredient = pool.Ingredients.Get();
-                        ingredient.Launch(spawnPoint.position, velocity, data);
+                        yield return new WaitForSeconds(slotDelay);
                     }
                 }
 
-                yield return _wait;
+                float interval = spawnCurve.GetSpawnInterval(elapsedRunTime);
+                yield return new WaitForSeconds(interval);
             }
         }
 
-        private void RecomputeTotalWeight()
+       private void SpawnSlot(float elapsedRunTime)
         {
-            _totalWeight = 0f;
-            if(catalog == null)
+            Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            Vector2 velocity = new(Random.Range(minXVel, maxXVel), Random.Range(minYVel, maxYVel));
+            float bombProbability = spawnCurve.GetBombProbability(elapsedRunTime);
+
+            if(Random.value < bombProbability)
+            {
+                var bomb = pool.Bombs.Get();
+                bomb.Launch(spawnPoint.position, velocity);
+                return;
+            }
+
+            IngredientData data = PickWeighted(elapsedRunTime);
+
+            if(data ==  null)
             {
                 return;
             }
 
-            foreach(var d in catalog)
-            {
-                if (d != null && !d.isHazard && d.spawnWeight > 0f)
-                {
-                    _totalWeight += d.spawnWeight;
-                }
-            }
+            var ingredient = pool.Ingredients.Get();
+            ingredient.Launch(spawnPoint.position, velocity, data);
         }
 
-        private IngredientData PickWeighted()
+        private IngredientData PickWeighted(float elapsedRunTime)
         {
-            if(_totalWeight <= 0f)
+            float totalWeight = 0f;
+
+            for (int i = 0; i < catalog.Length; i++)
+            {
+                IngredientData data = catalog[i];
+
+                if(data == null || data.isHazard)
+                {
+                    continue;
+                }
+
+                totalWeight += spawnCurve.GetIngredientWeight(i, elapsedRunTime);
+            }
+
+            if(totalWeight <= 0f)
             {
                 return null;
             }
 
-            float r = Random.value * _totalWeight;
+            float roll = Random.value * totalWeight;
             float cumulative = 0f;
-            foreach(var d in catalog)
+
+            for (int i = 0; i < catalog.Length; i++)
             {
-                if(d == null || d.isHazard || d.spawnWeight <= 0f)
+                IngredientData data = catalog[i];
+
+                if (data == null || data.isHazard)
                 {
                     continue;
                 }
-                cumulative += d.spawnWeight;
-                if(r <= cumulative)
+
+                cumulative += spawnCurve.GetIngredientWeight(i, elapsedRunTime);
+
+                if (roll <= cumulative)
                 {
-                    return d;
+                    return data;
                 }
             }
+
             for (int i = catalog.Length - 1; i >= 0; i--)
             {
                 if (catalog[i] != null && !catalog[i].isHazard)
@@ -142,6 +178,7 @@ namespace SamuraiSlice
                     return catalog[i];
                 }
             }
+
             return null;
         }
     }
