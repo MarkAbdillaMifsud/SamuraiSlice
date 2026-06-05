@@ -5,7 +5,7 @@ namespace SamuraiSlice
 {
     public class SliceSfx : MonoBehaviour
     {
-        [SerializeField] private ComboTracker comboTracker;
+        [SerializeField] private ScoreManager scoreManager;
 
         [SerializeField] private AudioClip[] sliceVariants;
         [SerializeField] private AudioClip chimeClip;
@@ -18,12 +18,18 @@ namespace SamuraiSlice
 
         private void OnEnable()
         {
-            Ingredient.Sliced += OnIngredientSliced;
+            if(scoreManager != null)
+            {
+                scoreManager.OnSliceScored += HandleSliceScored;
+            }
         }
 
         private void OnDisable()
         {
-            Ingredient.Sliced -= OnIngredientSliced;
+            if(scoreManager != null)
+            {
+                scoreManager.OnSliceScored -= HandleSliceScored;
+            }
         }
 
         public void Play(Vector2 worldPos, int comboLevel)
@@ -39,6 +45,12 @@ namespace SamuraiSlice
 
             float slicePitch = 1f + SlicePitchStop * (comboLevel - 1);
             PlayOneShot(sliceClip, worldPos, slicePitch);
+
+            if(comboLevel >= 2 && chimeClip != null)
+            {
+                float chimePitch = 1f + ChimePitchStep * (comboLevel - 2);
+                PlayOneShot(chimeClip, worldPos, chimePitch);
+            }
         }
 
         private void PlayOneShot(AudioClip clip, Vector2 worldPos, float pitch)
@@ -68,10 +80,9 @@ namespace SamuraiSlice
             Destroy(host, clip.length / Mathf.Max(pitch, 0.01f) + 0.1f);
         }
 
-        private void OnIngredientSliced(Ingredient ingredient)
+        private void HandleSliceScored(int finalPoints, int multiplier, Vector3 worldPos, Color accentColour)
         {
-            int multiplier = comboTracker != null ? comboTracker.RegisterSlice() : 1;
-            Play(ingredient.transform.position, multiplier);
+            Play(worldPos, multiplier);
         }
     }
 }
