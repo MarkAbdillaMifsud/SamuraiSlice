@@ -4456,7 +4456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8e49ea585918bc40b7006843eb9e1dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SamuraiSlice.SliceSfx
-  comboTracker: {fileID: 5136371154450960053}
+  scoreManager: {fileID: 668640544}
   sliceVariants:
   - {fileID: 8300000, guid: 95ef8382837ab594dbeb4a4a1d0ddf94, type: 3}
   - {fileID: 8300000, guid: d27a7c9062a8c8a4bb612d690ddc8b65, type: 3}

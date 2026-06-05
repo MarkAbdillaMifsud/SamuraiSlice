@@ -5,22 +5,19 @@ namespace SamuraiSlice
 {
     public class ComboTracker : MonoBehaviour
     {
-        [Header("References")]
         [SerializeField] private SwipeInput swipeInput;
-
-        [Header("Tuning")]
         [SerializeField, Min(1)] private int maxMultiplier = 5;
         [SerializeField, Min(2)] private int energisedThreshold = 3;
 
-        public int CurrentMultiplier => Mathf.Min(strokeSliceEvents + 1, maxMultiplier);
+        public int CurrentMultiplier => _currentMultiplier;
 
         public event Action OnEnergisedEntered;
         public event Action OnStrokeEnded;
         public event Action<int> OnMultiplierChanged;
 
-        private int strokeSliceEvents;
-        private int? frameLockMultiplier;
-        private bool energisedThisStroke;
+        private int _slicesThisStroke;
+        private int _currentMultiplier = 1;
+        private bool _energisedThisStroke;
 
         private void Awake()
         {
@@ -58,49 +55,46 @@ namespace SamuraiSlice
 
         public int RegisterSlice()
         {
-            if(frameLockMultiplier == null)
+            _slicesThisStroke++;
+
+            int newMultiplier = Mathf.Min(_slicesThisStroke, maxMultiplier);
+
+            if(newMultiplier != _currentMultiplier)
             {
-                frameLockMultiplier = CurrentMultiplier;
+                _currentMultiplier = newMultiplier;
+                OnMultiplierChanged?.Invoke(_currentMultiplier);
             }
 
-            int multiplier = frameLockMultiplier.Value;
-
-            if(multiplier >= energisedThreshold && !energisedThisStroke)
+            if(_currentMultiplier >= energisedThreshold && !_energisedThisStroke)
             {
-                energisedThisStroke = true;
+                _energisedThisStroke = true;
                 OnEnergisedEntered?.Invoke();
             }
 
-            Debug.Log($"[Combo] slice mult={multiplier} strokeEvents={strokeSliceEvents} frame={Time.frameCount}");
-
-            return multiplier;
-        }
-
-        private void LateUpdate()
-        {
-            if(frameLockMultiplier == null)
-            {
-                return;
-            }
-            strokeSliceEvents += 1;
-            frameLockMultiplier = null;
-            OnMultiplierChanged?.Invoke(CurrentMultiplier);
+            return _currentMultiplier;
         }
 
         private void HandlePressStarted()
         {
-            strokeSliceEvents = 0;
-            frameLockMultiplier = null;
-            energisedThisStroke = false;
-            OnMultiplierChanged?.Invoke(CurrentMultiplier);
+            ResetStroke();
         }
 
         private void HandlePressReleased()
         {
-            if(energisedThisStroke)
+            if(_energisedThisStroke)
             {
                 OnStrokeEnded?.Invoke();
             }
+
+            ResetStroke();
+        }
+
+        private void ResetStroke()
+        {
+            _slicesThisStroke = 0;
+            _currentMultiplier = 1;
+            _energisedThisStroke = false;
+            OnMultiplierChanged?.Invoke(_currentMultiplier);
         }
     }
 }
