@@ -29,16 +29,22 @@ namespace SamuraiSlice
 
         public IReadOnlyList<Entry> Entries => _data.entries;
 
+        public static int GetLastScore()
+        {
+            return PlayerPrefs.GetInt(LastScoreKey, 0);
+        }
+
         private void Awake()
         {
             _data = Load();
+            SortandTrim();
         }
 
         public int SubmitLastRun()
         {
-            int score = PlayerPrefs.GetInt(LastScoreKey, 0);
+            int score = GetLastScore();
 
-            if(score <= 0)
+            if(!Qualifies(score))
             {
                 return -1;
             }
@@ -47,7 +53,7 @@ namespace SamuraiSlice
             var newEntry = new Entry { name = playerName, score = score };
 
             _data.entries.Add(newEntry);
-            _data.entries.Sort((a, b) => b.score.CompareTo(a.score));
+            SortandTrim();
 
             int rank = -1;
             for(int i = 0; i < Math.Min(_data.entries.Count, MaxEntries); i++)
@@ -57,11 +63,6 @@ namespace SamuraiSlice
                     rank = i + 1;
                     break;
                 }
-            }
-
-            if(_data.entries.Count > MaxEntries)
-            {
-                _data.entries.RemoveRange(MaxEntries, _data.entries.Count - MaxEntries);
             }
 
             Save();
@@ -75,6 +76,23 @@ namespace SamuraiSlice
             PlayerPrefs.Save();
 
             return rank;
+        }
+
+        public bool Qualifies(int score)
+        {
+            if(score <= 0)
+            {
+                return false;
+            }
+
+            SortandTrim();
+
+            if(_data.entries.Count < MaxEntries)
+            {
+                return true;
+            }
+
+            return score > _data.entries[MaxEntries - 1].score;
         }
 
         public static string GetPlayerName()
@@ -96,6 +114,16 @@ namespace SamuraiSlice
             PlayerPrefs.DeleteKey(LeaderboardKey);
             PlayerPrefs.DeleteKey(HighScoreKey);
             PlayerPrefs.Save();
+        }
+
+        private void SortandTrim()
+        {
+            _data.entries.Sort((a, b) => b.score.CompareTo(a.score));
+
+            if(_data.entries.Count > MaxEntries)
+            {
+                _data.entries.RemoveRange(MaxEntries, _data.entries.Count - MaxEntries);
+            }
         }
 
         private void Save()
