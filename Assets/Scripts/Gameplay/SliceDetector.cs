@@ -7,84 +7,146 @@ namespace SamuraiSlice
     public class SliceDetector : MonoBehaviour
     {
         [Header("References")]
-        [SerializeField] private SwipeTracker swipeTracker;
+        [SerializeField] private SwipeInput swipeInput;
 
         [Header("Filtering")]
         [SerializeField] private LayerMask sliceableLayers;
 
-        private readonly HashSet<Ingredient> _slicedThisFrame = new HashSet<Ingredient>();
+        private readonly HashSet<Ingredient> _slicedThisStroke = new();
+        private readonly HashSet<Bomb> _bombsSlicedThisStroke = new();
 
         private void Reset()
         {
-            swipeTracker = GetComponent<SwipeTracker>();
+            swipeInput = GetComponent<SwipeInput>();
         }
 
         private void Awake()
         {
-            if(swipeTracker == null)
+            if(swipeInput == null)
             {
-                swipeTracker = GetComponent<SwipeTracker>();
+                swipeInput = GetComponent<SwipeInput>();
             }
 
-            if (swipeTracker == null)
+            if (swipeInput == null)
             {
-                Debug.LogError("[SliceDetector] No SwipeTracker reference assigned — disabling.", this);
                 enabled = false;
             }
         }
 
-        private void Update()
+        private void OnEnable()
         {
-            _slicedThisFrame.Clear();
-
-            IReadOnlyList<Vector2> path = swipeTracker.CurrentPath;
-            if(path == null || path.Count < 2)
+            if(swipeInput == null)
             {
                 return;
             }
 
-            for (int i = 0; i < path.Count - 1; i++)
+            swipeInput.OnPressStarted += HandlePressStarted;
+            swipeInput.OnPressReleased += HandlePressReleased;
+        }
+
+        private void OnDisable()
+        {
+            if (swipeInput == null)
             {
-                Vector2 a = path[i];
-                Vector2 b = path[i + 1];
-
-                RaycastHit2D hit = Physics2D.Linecast(a, b, sliceableLayers);
-                Vector2 swipeDirection = b - a;
-
-                if (hit.collider == null)
-                {
-                    continue;
-                }
-
-                if(hit.collider.CompareTag("Bomb"))
-                {
-                    Bomb _bomb = hit.collider.GetComponent<Bomb>();
-                    if(_bomb != null )
-                    {
-                        _bomb.Slice(swipeDirection);
-                    }
-                    continue;
-                }
-
-                if(!hit.collider.CompareTag("Ingredient"))
-                {
-                    continue;
-                }
-
-                Ingredient ingredient = hit.collider.GetComponent<Ingredient>();
-
-                if(ingredient == null)
-                {
-                    continue;
-                }
-
-                if(!_slicedThisFrame.Add(ingredient))
-                {
-                    continue;
-                }
-
-                ingredient.Slice(swipeDirection);
+                return;
             }
+
+            swipeInput.OnPressStarted -= HandlePressStarted;
+            swipeInput.OnPressReleased -= HandlePressReleased;
+        }
+
+        private void Update()
+        {
+            if(swipeInput == null)
+            {
+                return;
+            }
+
+            if(!swipeInput.TryGetCurrentSegment(out Vector2 from, out Vector2 to))
+            {
+                return;
+            }
+
+            Vector2 swipeDirection = to - from;
+
+            RaycastHit2D[] hits = Physics2D.LinecastAll(from, to, sliceableLayers);
+
+            if (hits == null || hits.Length == 0) {
+                return;
+            }
+
+            for(int i = 0; i < hits.Length; i++)
+            {
+                Collider2D hitCollider = hits[i].collider;
+
+                if (hitCollider == null) 
+                {
+                    continue;
+                }
+
+                ResolveHit(hitCollider, swipeDirection);
+            }
+
+        }
+    
+        private void HandlePressStarted()
+        {
+            _slicedThisStroke.Clear();
+            _bombsSlicedThisStroke.Clear();
+        }
+
+        private void HandlePressReleased()
+        {
+            _slicedThisStroke.Clear();
+            _bombsSlicedThisStroke.Clear();
+        }
+
+        private void ResolveHit(Collider2D hitCollider, Vector2 swipeDirection)
+        {
+            if(hitCollider.CompareTag("Bomb"))
+            {
+                ResolveBombHit(hitCollider, swipeDirection);
+                return;
+            }
+
+            if(hitCollider.CompareTag("Ingredient"))
+            {
+                ResolveIngredientHit(hitCollider, swipeDirection);
+            }
+        }
+
+        private void ResolveIngredientHit(Collider2D hitCollider, Vector2 swipeDirection)
+        {
+            Ingredient ingredient = hitCollider.GetComponent<Ingredient>();
+
+            if(ingredient == null)
+            {
+                return;
+            }
+
+            if(!_slicedThisStroke.Add(ingredient))
+            {
+                return;
+            }
+
+            ingredient.Slice(swipeDirection);
+        }
+
+        private void ResolveBombHit(Collider2D hitCollider, Vector2 swipeDirection)
+        {
+            Bomb bomb = hitCollider.GetComponent<Bomb>();
+
+            if (bomb == null)
+            {
+                return;
+            }
+
+            if (!_bombsSlicedThisStroke.Add(bomb))
+            {
+                return;
+            }
+
+            bomb.Slice(swipeDirection);
         }
     }
 }
