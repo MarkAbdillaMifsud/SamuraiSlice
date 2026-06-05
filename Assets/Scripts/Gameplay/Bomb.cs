@@ -65,6 +65,7 @@ namespace SamuraiSlice
             gameObject.SetActive(true);
             transform.localScale = _baseScale;
             _rb.simulated = true;
+            _rb.gravityScale = 1f;
             _rb.linearVelocity = velocity;
             _rb.angularVelocity = 0f;
             if(_sr != null)

@@ -80,7 +80,6 @@ namespace SamuraiSlice
             while (_isSpawning)
             {
                 float elapsedRunTime = Time.time - _runStartTime;
-                Debug.Log($"[Spawner] t={elapsedRunTime:0.0}, interval={spawnCurve.GetSpawnInterval(elapsedRunTime):0.00}, bomb={spawnCurve.GetBombProbability(elapsedRunTime):0.00}");
 
                 Vector2 groupSizeRange = spawnCurve.GetGroupSizeRange(elapsedRunTime);
                 int minGroupSize = Mathf.RoundToInt(groupSizeRange.x);

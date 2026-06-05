@@ -23,6 +23,9 @@ namespace SamuraiSlice
         private readonly HashSet<Ingredient> _activeIngredients = new();
         public IReadOnlyCollection<Ingredient> ActiveIngredients => _activeIngredients;
 
+        private readonly HashSet<Bomb> _activeBombs = new();
+        public IReadOnlyCollection<Bomb> ActiveBombs => _activeBombs;
+
         public ObjectPool<Ingredient> Ingredients { get { EnsureInitialized(); return _ingredients; } }
         public ObjectPool<IngredientHalf> Halves { get { EnsureInitialized(); return _halves; } }
         public ObjectPool<Bomb> Bombs { get { EnsureInitialized(); return _bombs; } }
@@ -65,12 +68,38 @@ namespace SamuraiSlice
 
             _bombs = new ObjectPool<Bomb>(
                 createFunc: CreateBomb,
-                actionOnGet: null,
-                actionOnRelease: b => b.gameObject.SetActive(false),
+                actionOnGet: b => _activeBombs.Add(b),
+                actionOnRelease: b =>
+                { _activeBombs.Remove(b); b.gameObject.SetActive(false); },
                 actionOnDestroy: b => Destroy(b.gameObject),
                 collectionCheck: false,
                 defaultCapacity: defaultCapacity,
                 maxSize: maxSize);
+        }
+
+        public void ReleaseAllActive()
+        {
+            Ingredient[] activeIngredients = new Ingredient[_activeIngredients.Count];
+            _activeIngredients.CopyTo(activeIngredients);
+
+            foreach(Ingredient ingredient in activeIngredients)
+            {
+                if(ingredient != null && ingredient.gameObject.activeSelf)
+                {
+                    Ingredients.Release(ingredient);
+                }
+            }
+
+            Bomb[] activeBombs = new Bomb[_activeBombs.Count];
+            _activeBombs.CopyTo(activeBombs);
+
+            foreach(Bomb bomb in activeBombs)
+            {
+                if(bomb != null && bomb.gameObject.activeSelf)
+                {
+                    Bombs.Release(bomb);
+                }
+            }
         }
 
         private Ingredient CreateIngredient()

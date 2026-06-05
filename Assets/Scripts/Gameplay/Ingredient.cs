@@ -49,6 +49,8 @@ namespace SamuraiSlice
             transform.SetPositionAndRotation(position, Quaternion.identity);
             IsSliced = false;
             gameObject.SetActive(true);
+            _rb.simulated = true;
+            _rb.gravityScale = 1f;
             _rb.linearVelocity = velocity;
             _rb.angularVelocity = 0f;
 

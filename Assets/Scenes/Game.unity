@@ -5314,6 +5314,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5136371154450960053}
     - target: {fileID: 4641966046542050643, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
+      propertyPath: ingredientPool
+      value: 
+      objectReference: {fileID: 1310024681}
+    - target: {fileID: 4641966046542050643, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
       propertyPath: tutorialOverlay
       value: 
       objectReference: {fileID: 2014689451}

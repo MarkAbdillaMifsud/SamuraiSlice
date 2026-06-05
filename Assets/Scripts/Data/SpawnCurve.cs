@@ -8,7 +8,7 @@ namespace SamuraiSlice
         public AnimationCurve spawnInterval = new(
             new Keyframe(0f, 1.0f),
             new Keyframe(20f, 1.0f),
-            new Keyframe(45f, 0.7f),
+            new Keyframe(45f, 0.6f),
             new Keyframe(75f, 0.5f),
             new Keyframe(300f, 0.5f)
         );
@@ -18,12 +18,12 @@ namespace SamuraiSlice
             new Keyframe(15f, 0f),
             new Keyframe(20f, 0f),
             new Keyframe(45f, 0.04f),
-            new Keyframe(75f, 0.08f),
+            new Keyframe(60f, 0.08f),
             new Keyframe(300f, 0.08f)
         );
 
         public Vector2 phase1GroupSizeRange = new(1f, 1f);
-        public Vector2 phase2GroupSizeRange = new(1f, 2f);
+        public Vector2 phase2GroupSizeRange = new(1f, 3f);
         public Vector2 phase3GroupSizeRange = new(2f, 4f);
 
         public AnimationCurve[] ingredientWeights =
@@ -32,7 +32,7 @@ namespace SamuraiSlice
                 new Keyframe(0f, 0.40f),
                 new Keyframe(20f, 0.40f),
                 new Keyframe(45f, 0.30f),
-                new Keyframe(75f, 0.25f),
+                new Keyframe(60f, 0.25f),
                 new Keyframe(300f, 0.25f)
             ),
 

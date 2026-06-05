@@ -16,6 +16,7 @@ namespace SamuraiSlice
         [SerializeField] private Spawner spawner;
         [SerializeField] private MissCounter missCounter;
         [SerializeField] private TutorialOverlay tutorialOverlay;
+        [SerializeField] private IngredientPool ingredientPool;
         [SerializeField] private int missThreshold = 3;
         [SerializeField] private string gameOverSceneName = "GameOver";
         [SerializeField] private float gameOverDelay = 1.5f;
@@ -164,20 +165,15 @@ namespace SamuraiSlice
             _isEndingRun = true;
 
             SetState(GameState.GameOver);
-            Debug.Log(_isEndingRun);
 
             if(spawner != null)
             {
                 spawner.StopSpawning();
             }
 
-            foreach (var ingredient in FindObjectsByType<Ingredient>(FindObjectsInactive.Exclude))
+            if (ingredientPool != null)
             {
-                ingredient.ForceRelease();
-            }
-            foreach (var bomb in FindObjectsByType<Bomb>(FindObjectsInactive.Exclude))
-            {
-                bomb.ForceRelease();
+                ingredientPool.ReleaseAllActive();
             }
 
             StartCoroutine(LoadGameOverScene());
@@ -185,7 +181,6 @@ namespace SamuraiSlice
 
         private IEnumerator LoadGameOverScene()
         {
-            Debug.Log("Started Coroutine");
             yield return new WaitForSecondsRealtime(gameOverDelay);
             SceneManager.LoadScene(gameOverSceneName);
         }
