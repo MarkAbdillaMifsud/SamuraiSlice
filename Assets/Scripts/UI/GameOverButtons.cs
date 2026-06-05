@@ -10,11 +10,13 @@ namespace SamuraiSlice
 
         public void OnRetryPressed()
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(gameplaySceneName);
         }
 
         public void OnMainMenuPressed()
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(mainMenuSceneName);
         }
     }

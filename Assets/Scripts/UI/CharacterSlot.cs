@@ -44,7 +44,7 @@ namespace SamuraiSlice
                 _dragAccumulator -= pixelsPerStep;
             }
 
-            while(_dragAccumulator <=  pixelsPerStep)
+            while(_dragAccumulator <=  -pixelsPerStep)
             {
                 Step(-1);
                 _dragAccumulator += pixelsPerStep;

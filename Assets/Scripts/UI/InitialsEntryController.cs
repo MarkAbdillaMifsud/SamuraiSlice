@@ -8,13 +8,46 @@ namespace SamuraiSlice
         [SerializeField] private CharacterSlot[] slots;
         [SerializeField] private GameObject initialsPanel;
         [SerializeField] private GameObject leaderboardPanel;
+        [SerializeField] private GameObject didNotQualifyPanel;
         [SerializeField] private LeaderboardManager leaderboardManager;
         [SerializeField] private GameOverBinder gameOverBinder;
 
         private void Start()
         {
             PrePopulateSlots();
+
+            int lastScore = LeaderboardManager.GetLastScore();
+            bool qualifies = leaderboardManager != null && leaderboardManager.Qualifies(lastScore);
+
+            if (qualifies)
+            {
+                ShowInitialsEntry();
+            } else
+            {
+                ShowDidNotQualify();
+            }
+        }
+
+        private void ShowInitialsEntry()
+        {
             SetPhase(initialsVisible: true);
+
+            if (didNotQualifyPanel != null)
+            {
+                didNotQualifyPanel.SetActive(false);
+            }
+        }
+
+        private void ShowDidNotQualify()
+        {
+            SetPhase(initialsVisible: false);
+
+            if (didNotQualifyPanel != null)
+            {
+                didNotQualifyPanel.SetActive(true);
+            }
+
+            gameOverBinder?.ShowLeaderboard();
         }
 
         public void OnConfirmPressed()
@@ -28,12 +61,19 @@ namespace SamuraiSlice
             LeaderboardManager.SetPlayerName(sb.ToString());
 
             int rank = -1;
+
             if(leaderboardManager != null)
             {
                 rank = leaderboardManager.SubmitLastRun();
             }
 
             SetPhase(initialsVisible: false);
+
+            if(didNotQualifyPanel != null)
+            {
+                didNotQualifyPanel.SetActive(false);
+            }
+
             gameOverBinder?.ShowLeaderboard(rank);
         }
 

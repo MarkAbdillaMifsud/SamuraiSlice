@@ -20,7 +20,7 @@ namespace SamuraiSlice
 
         private void Awake()
         {
-            _cachedLastScore = PlayerPrefs.GetInt("SamuraiSlice_LastScore", 0);
+            _cachedLastScore = LeaderboardManager.GetLastScore();
         }
 
         private void Start()
