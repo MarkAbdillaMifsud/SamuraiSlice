@@ -27,9 +27,11 @@ namespace SamuraiSlice
         private Vector2 _lastWorldPoint;
         private Vector2 _currentWorldPoint;
         private bool _hasFirstSample;
+        private Vector2 _currentScreenPoint;
 
         public bool IsSwiping { get; private set; }
         public Vector2 CurrentWorldPoint => _currentWorldPoint;
+        public Vector2 CurrentScreenPoint => _currentScreenPoint;
 
         // Will be called by SwipeDetector to decide whether to run the Linecast or not 
         public bool TryGetCurrentSegment(out Vector2 from, out Vector2 to)
@@ -38,7 +40,7 @@ namespace SamuraiSlice
             {
                 from = _lastWorldPoint;
                 to = _currentWorldPoint;
-                return from != to;
+                return (to - from).sqrMagnitude > 0.000001f;
             }
             from = to = default;
             return false;
@@ -79,7 +81,8 @@ namespace SamuraiSlice
                 return;
             }
 
-            Vector2 sampled = ScreenToWorld(_positionAction.ReadValue<Vector2>());
+            _currentScreenPoint = ReadPointerScreenPosition();
+            Vector2 sampled = ScreenToWorld(_currentScreenPoint);
 
             if (!_hasFirstSample)
             {
@@ -89,8 +92,9 @@ namespace SamuraiSlice
                 return;
             }
 
-            // Ensure a swipe is valid first rather than processing everything every frame
-            if (Vector2.Distance(sampled, _currentWorldPoint) >= minSampleDistance)
+            float distance = Vector2.Distance(sampled, _currentWorldPoint);
+
+            if (distance >= minSampleDistance)
             {
                 _lastWorldPoint = _currentWorldPoint;
                 _currentWorldPoint = sampled;
@@ -100,7 +104,14 @@ namespace SamuraiSlice
         private void HandlePressStarted(InputAction.CallbackContext _)
         {
             IsSwiping = true;
-            _hasFirstSample = false;
+
+            _currentScreenPoint = ReadPointerScreenPosition();
+            Vector2 sampled = ScreenToWorld(_currentScreenPoint);
+
+            _lastWorldPoint = sampled;
+            _currentWorldPoint = sampled;
+            _hasFirstSample = true;
+
             OnPressStarted?.Invoke();
         }
 
@@ -118,17 +129,41 @@ namespace SamuraiSlice
 
         private Vector2 ScreenToWorld(Vector2 screenPoint)
         {
-            Vector3 sp = new(screenPoint.x, screenPoint.y, -worldCamera.transform.position.z);
-            return worldCamera.ScreenToWorldPoint(sp);
+            Ray ray = worldCamera.ScreenPointToRay(screenPoint);
+            Plane gameplayPlane = new Plane(Vector3.forward, Vector3.zero);
+
+            if (gameplayPlane.Raycast(ray, out float distance))
+            {
+                Vector3 worldPoint = ray.GetPoint(distance);
+                return new Vector2(worldPoint.x, worldPoint.y);
+            }
+
+            Vector3 fallback = worldCamera.ScreenToWorldPoint(
+                new Vector3(screenPoint.x, screenPoint.y, Mathf.Abs(worldCamera.transform.position.z))
+            );
+
+            return new Vector2(fallback.x, fallback.y);
         }
 
-        //TODO: Remove later - intended for gizmo testing of swiping
-        private void OnDrawGizmos()
+        private Vector2 ReadPointerScreenPosition()
         {
-            if (!IsSwiping || !_hasFirstSample) return;
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(_lastWorldPoint, _currentWorldPoint);
-            Gizmos.DrawSphere(_currentWorldPoint, 0.1f);
+            if (Touchscreen.current != null)
+            {
+                foreach (var touch in Touchscreen.current.touches)
+                {
+                    if (touch.press.isPressed)
+                    {
+                        return touch.position.ReadValue();
+                    }
+                }
+            }
+
+            if (Mouse.current != null)
+            {
+                return Mouse.current.position.ReadValue();
+            }
+
+            return _positionAction.ReadValue<Vector2>();
         }
     }
 }

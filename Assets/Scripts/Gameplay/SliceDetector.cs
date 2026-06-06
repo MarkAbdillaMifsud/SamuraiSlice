@@ -6,11 +6,9 @@ namespace SamuraiSlice
     [DisallowMultipleComponent]
     public class SliceDetector : MonoBehaviour
     {
-        [Header("References")]
         [SerializeField] private SwipeInput swipeInput;
-
-        [Header("Filtering")]
         [SerializeField] private LayerMask sliceableLayers;
+        [SerializeField, Min(0.01f)] private float bladeRadius = 0.18f;
 
         private readonly HashSet<Ingredient> _slicedThisStroke = new();
         private readonly HashSet<Bomb> _bombsSlicedThisStroke = new();
@@ -67,9 +65,17 @@ namespace SamuraiSlice
                 return;
             }
 
-            Vector2 swipeDirection = to - from;
+            Vector2 swipeVector = to - from;
+            float swipeDistance = swipeVector.magnitude;
 
-            RaycastHit2D[] hits = Physics2D.LinecastAll(from, to, sliceableLayers);
+            if (swipeDistance <= 0.001f)
+            {
+                return;
+            }
+
+            Vector2 swipeDirection = swipeVector / swipeDistance;
+
+            RaycastHit2D[] hits = Physics2D.CircleCastAll(from, bladeRadius, swipeDirection, swipeDistance, sliceableLayers);
 
             if (hits == null || hits.Length == 0) {
                 return;
