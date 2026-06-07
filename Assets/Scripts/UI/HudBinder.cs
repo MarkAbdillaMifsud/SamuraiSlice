@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +12,10 @@ namespace SamuraiSlice
         [SerializeField] TMP_Text scoreText;
         [SerializeField] TMP_Text missText;
         [SerializeField] TMP_Text comboText;
+        [SerializeField] private float comboHideDelay = 0.45f;
+        [SerializeField] private float comboFadeDuration = 0.2f;
+
+        private Coroutine _comboHideRoutine;
 
         const int MaxMisses = 3;
 
@@ -47,6 +52,11 @@ namespace SamuraiSlice
             {
                 comboTracker.OnMultiplierChanged -= HandleComboChanged;
             }
+            if (_comboHideRoutine != null)
+            {
+                StopCoroutine(_comboHideRoutine);
+                _comboHideRoutine = null;
+            }
         }
 
         private void HandleScoreChanged(int newScore)
@@ -67,10 +77,61 @@ namespace SamuraiSlice
 
         private void HandleComboChanged(int newMultiplier)
         {
-            if(comboText != null)
+            if (comboText == null)
             {
-                comboText.text = newMultiplier <= 1 ? string.Empty : $"x{newMultiplier}";
+                return;
             }
+
+            if (newMultiplier <= 1)
+            {
+                BeginHideCombo();
+                return;
+            }
+
+            ShowCombo(newMultiplier);
+        }
+
+        private void ShowCombo(int multiplier)
+        {
+            if(_comboHideRoutine != null)
+            {
+                StopCoroutine(_comboHideRoutine);
+                _comboHideRoutine = null;
+            }
+
+            comboText.gameObject.SetActive(true);
+            comboText.alpha = 1f;
+            comboText.text = $"x{multiplier}";
+        }
+
+        private void BeginHideCombo()
+        {
+            if(_comboHideRoutine != null)
+            {
+                StopCoroutine(_comboHideRoutine);
+            }
+
+            _comboHideRoutine = StartCoroutine(HideComboAfterDelay());
+        }
+
+        private IEnumerator HideComboAfterDelay()
+        {
+            yield return new WaitForSeconds(comboHideDelay);
+
+            float elapsed = 0f;
+            float startAlpha = comboText.alpha;
+
+            while (elapsed < comboFadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                comboText.alpha = Mathf.Lerp(startAlpha, 0f, elapsed / comboFadeDuration);
+                yield return null;
+            }
+
+            comboText.alpha = 0f;
+            comboText.text = string.Empty;
+            comboText.gameObject.SetActive(false);
+            _comboHideRoutine = null;
         }
     }
 }

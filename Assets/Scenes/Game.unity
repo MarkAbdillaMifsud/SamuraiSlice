@@ -2684,7 +2684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1308948469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4228,6 +4228,8 @@ MonoBehaviour:
   scoreText: {fileID: 328900651}
   missText: {fileID: 1554614379}
   comboText: {fileID: 1308948469}
+  comboHideDelay: 0.45
+  comboFadeDuration: 0.2
 --- !u!1 &1986945612 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3596214338467228322, guid: 07f5558b572895a44a6b023faf992db9, type: 3}
