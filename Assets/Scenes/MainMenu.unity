@@ -748,7 +748,7 @@ MonoBehaviour:
   masterVolumeSlider: {fileID: 3206333942404585858}
   musicToggle: {fileID: 3206333942404585857}
   sfxToggle: {fileID: 3206333942404585856}
-  confirmationPanel: {fileID: 3206333942404585855}
+  confirmationPanel: {fileID: 1005087495}
   settingsPanel: {fileID: 297610856}
 --- !u!1 &297610856 stripped
 GameObject:
@@ -1667,6 +1667,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1005087495 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9153089040328273228, guid: 8e9c4cda684e3434080b23bab02faa40, type: 3}
+  m_PrefabInstance: {fileID: 3206333942404585854}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1301023364
 GameObject:
   m_ObjectHideFlags: 0
@@ -3203,6 +3208,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 297610856}
     - target: {fileID: 7523107131487600513, guid: 8e9c4cda684e3434080b23bab02faa40, type: 3}
+      propertyPath: confirmationPanel
+      value: 
+      objectReference: {fileID: 1005087495}
+    - target: {fileID: 7523107131487600513, guid: 8e9c4cda684e3434080b23bab02faa40, type: 3}
       propertyPath: leaderboardManager
       value: 
       objectReference: {fileID: 465916721}
@@ -3303,11 +3312,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e9c4cda684e3434080b23bab02faa40, type: 3}
---- !u!1 &3206333942404585855 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7081138781435221913, guid: 8e9c4cda684e3434080b23bab02faa40, type: 3}
-  m_PrefabInstance: {fileID: 3206333942404585854}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3206333942404585856 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4656798815171559696, guid: 8e9c4cda684e3434080b23bab02faa40, type: 3}
