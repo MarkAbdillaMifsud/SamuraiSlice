@@ -32,7 +32,6 @@ namespace SamuraiSlice
             }
 
             CurrentMisses++;
-            Debug.Log($"[MissCounter] Miss {CurrentMisses}/{maxMisses}");
             OnMissCountChanged?.Invoke( CurrentMisses);
             if(CurrentMisses >= maxMisses)
             {

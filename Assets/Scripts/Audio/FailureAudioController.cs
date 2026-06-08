@@ -42,15 +42,14 @@ namespace SamuraiSlice
             {
                 GameManager.Instance.OnStateChanged += HandleStateChanged;
             }
-            else
-            {
-                Debug.LogError("[FailureAudioController] GameManager.Instance is null in Start. " + "Ensure GameManager is in the same scene and executes before this component.", this);
-            }
         }
 
         private void HandleBombDetonationStarted()
         {
             _bombDetonatedThisRun = true;
+
+            CancelActiveRoutine();
+            _activeRoutine = StartCoroutine(BombCutRoutine());
         }
 
         private void HandleStateChanged(GameManager.GameState newState)
@@ -69,16 +68,13 @@ namespace SamuraiSlice
 
         private void OnEnterGameOver()
         {
-            CancelActiveRoutine();
-
             if (_bombDetonatedThisRun)
             {
-                _activeRoutine = StartCoroutine(BombCutRoutine());
+                return;
             }
-            else
-            {
-                _activeRoutine = StartCoroutine(MissOutFadeRoutine());
-            }
+
+            CancelActiveRoutine();
+            _activeRoutine = StartCoroutine(MissOutFadeRoutine());
         }
 
         private void OnEnterPlaying()
@@ -143,7 +139,6 @@ namespace SamuraiSlice
         {
             if (clip == null)
             {
-                Debug.LogWarning("[FailureAudioController] AudioClip is null — skipping PlayOneShot.", this);
                 return;
             }
 
